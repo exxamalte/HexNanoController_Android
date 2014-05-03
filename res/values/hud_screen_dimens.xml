@@ -16,5 +16,11 @@
     <dimen name="hud_batterry_indicator_margin_left">185dp</dimen>
     <dimen name="hud_alt_hold_toggle_btn_margin_top">5dp</dimen>
     <dimen name="hud_alt_hold_toggle_btn_margin_left">10dp</dimen>
-    <dimen name="hud_joy_margin">25dp</dimen> 
+    <dimen name="hud_joy_margin">25dp</dimen>
+  <dimen name="hud_stopwatch_bar_margin_top">8dp</dimen>
+  <dimen name="hud_stopwatch_bar_margin_right">160dp</dimen>
+  <dimen name="hud_stopwatch_margin_top">@dimen/hud_top_text_margin_top</dimen>
+  <dimen name="hud_stopwatch_margin_right">180dp</dimen>
+  <dimen name="hud_btn_stopwatch_reset_margin_top">5dp</dimen>
+  <dimen name="hud_btn_stopwatch_reset_margin_right">100dp</dimen>
 </resources>

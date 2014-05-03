@@ -58,8 +58,12 @@ import com.hexairbot.hexmini.R;
 import com.hexairbot.hexmini.services.IpcProxy;
 import com.hexairbot.hexmini.services.IpcControlService;
 import com.hexairbot.hexmini.util.DebugHandler;
+import com.hexairbot.hexmini.util.StopWatch;
 import com.hexairbot.hexmini.util.SystemUtil;
 
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class HudViewController extends ViewController
 	implements OnTouchListener,
@@ -84,7 +88,10 @@ public class HudViewController extends ViewController
 	private static final int BOTTOM_RIGHT_SKREW   = 14;
 	private static final int LOGO                 = 15;
 	private static final int STATUS_BAR           = 16;
-	
+	private static final int STOPWATCH_BAR        = 17;
+  private static final int STOPWATCH_TEXT_VIEW  = 18;
+  private static final int STOPWATCH_RESET_BTN_ID = 19;
+
 	private final float  BEGINNER_ELEVATOR_CHANNEL_RATIO  = 0.5f;
 	private final float  BEGINNER_AILERON_CHANNEL_RATIO   = 0.5f;
 	private final float  BEGINNER_RUDDER_CHANNEL_RATIO    = 0.0f;
@@ -95,6 +102,7 @@ public class HudViewController extends ViewController
 	private Button stopBtn;
 	private Button takeOffBtn;
 	private Button settingsBtn;
+	private Button stopWatchResetBtn;
 	private ToggleButton altHoldToggleBtn;
 	
 	private Text stateTextView;
@@ -140,7 +148,9 @@ public class HudViewController extends ViewController
     private float pitchBase;
     private float rollBase;
     private boolean rollAndPitchJoystickPressed;
-    
+
+  private Text stopWatchTextView;
+  private StopWatch stopWatch;
     
     private LocalBroadcastManager mLocalBroadcastManager;
     
@@ -181,7 +191,7 @@ public class HudViewController extends ViewController
 		Resources res = context.getResources();
 
 		Image topBarBg = new Image(res, R.drawable.bar_top, Align.TOP_CENTER);
-		topBarBg.setSizeParams(SizeParams.FILL_SCREEN, SizeParams.NONE);  //WidthË®Æ½ÉìËõÖÁÈ«ÆÁ£¬height±£³Ö²»±ß
+		topBarBg.setSizeParams(SizeParams.FILL_SCREEN, SizeParams.NONE);  //WidthË®Æ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½heightï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½
 		topBarBg.setAlphaEnabled(true);
 		
 		bottomBarBg = new Image(res, R.drawable.bar_bottom, Align.BOTTOM_CENTER);
@@ -191,7 +201,7 @@ public class HudViewController extends ViewController
 		Image middleBg = new Image(res, R.drawable.bg_tile, Align.CENTER);
 		middleBg.setAlpha(1f);
 		middleBg.setVisible(false);
-		middleBg.setSizeParams(SizeParams.REPEATED, SizeParams.REPEATED);  //WidthË®Æ½ÉìËõÖÁÈ«ÆÁ£¬height±£³Ö²»±ß
+		middleBg.setSizeParams(SizeParams.REPEATED, SizeParams.REPEATED);  //WidthË®Æ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½heightï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½
 		middleBg.setAlphaEnabled(true);
 		
 		Image bottomLeftSkrew = new Image(res, R.drawable.screw, Align.BOTTOM_LEFT);
@@ -202,8 +212,21 @@ public class HudViewController extends ViewController
 		
 		Image statusBar = new Image(res, R.drawable.status_bar, Align.TOP_LEFT);
 		statusBar.setMargin((int)res.getDimension(R.dimen.hud_status_bar_margin_top), 0, 0, (int)res.getDimension(R.dimen.hud_status_bar_margin_left));
-		
-		settingsBtn = new Button(res, R.drawable.btn_settings_normal, R.drawable.btn_settings_hl, Align.TOP_RIGHT);
+
+    Image stopWatchBar = new Image(res, R.drawable.stopwatch_bar, Align.TOP_RIGHT);
+    stopWatchBar.setMargin((int)res.getDimension(R.dimen.hud_stopwatch_bar_margin_top), (int)res.getDimension(R.dimen.hud_stopwatch_bar_margin_right), 0, 0);
+
+    String stopWatchText = "00:00";
+    stopWatchTextView = new Text(context, stopWatchText, Align.TOP_RIGHT);
+    stopWatchTextView.setMargin((int)res.getDimension(R.dimen.hud_stopwatch_margin_top), (int)res.getDimension(R.dimen.hud_stopwatch_margin_right), 0, 0);
+    stopWatchTextView.setTextColor(Color.WHITE);
+    stopWatchTextView.setTypeface(FontUtils.TYPEFACE.Helvetica(context));
+    stopWatchTextView.setTextSize(res.getDimensionPixelSize(R.dimen.hud_state_text_size));
+
+    stopWatchResetBtn = new Button(res, R.drawable.btn_stopwatchreset_normal, R.drawable.btn_stopwatchreset_hl, Align.TOP_RIGHT);
+    stopWatchResetBtn.setMargin((int)res.getDimension(R.dimen.hud_btn_stopwatch_reset_margin_top), (int)res.getDimension(R.dimen.hud_btn_stopwatch_reset_margin_right), 0, 0);
+
+    settingsBtn = new Button(res, R.drawable.btn_settings_normal, R.drawable.btn_settings_hl, Align.TOP_RIGHT);
 		settingsBtn.setMargin((int)res.getDimension(R.dimen.hud_btn_settings_margin_top), (int)res.getDimension(R.dimen.hud_btn_settings_margin_right), 0, 0);
 		
 		Button helpBtn = new Button(res, R.drawable.btn_help_normal, R.drawable.btn_help_hl, Align.TOP_RIGHT);
@@ -239,14 +262,15 @@ public class HudViewController extends ViewController
 		altHoldToggleBtn.setChecked(settings.isAltHoldMode());
 		altHoldToggleBtn.setVisible(false);
 		//altHoldToggleBtn.setAlphaEnabled(true);
-		
-		buttons = new Button[5];
+
+    buttons = new Button[6];
 		buttons[0] = settingsBtn;
 		buttons[1] = takeOffBtn;
 		buttons[2] = stopBtn;
 		buttons[3] = altHoldToggleBtn;
 		buttons[4] = helpBtn;
-		
+    buttons[5] = stopWatchResetBtn;
+
 		renderer.addSprite(MIDLLE_BG_ID, middleBg);
 		renderer.addSprite(TOP_BAR_ID, topBarBg);
 		renderer.addSprite(BOTTOM_BAR_ID, bottomBarBg);
@@ -260,6 +284,9 @@ public class HudViewController extends ViewController
 		renderer.addSprite(SETTINGS_BTN_ID, settingsBtn);
 		renderer.addSprite(ALT_HOLD_TOGGLE_BTN, altHoldToggleBtn);
 		renderer.addSprite(STATE_TEXT_VIEW, stateTextView);
+    renderer.addSprite(STOPWATCH_BAR, stopWatchBar);
+    renderer.addSprite(STOPWATCH_TEXT_VIEW, stopWatchTextView);
+    renderer.addSprite(STOPWATCH_RESET_BTN_ID, stopWatchResetBtn);
 		//renderer.addSprite(HELP_BTN, helpBtn);
 		
 		
@@ -285,7 +312,10 @@ public class HudViewController extends ViewController
 		else{
 			initJoysticks(JoystickType.ANALOGUE);
 		}
-		
+
+    stopWatch = new StopWatch();
+    initStopWatch(stopWatch, stopWatchTextView);
+
 		initListeners();
 		
 		initChannels();
@@ -318,8 +348,21 @@ public class HudViewController extends ViewController
 	    mLocalBroadcastManager = LocalBroadcastManager.getInstance(this.context);
 	    registerAllBroadcastReceiver();
 	}
-	
-	private void initChannels() {
+
+  private void initStopWatch(final StopWatch stopWatch, final Text stopWatchTextView) {
+    Timer timer = new Timer();
+    timer.schedule(new TimerTask() {
+      @Override
+      public void run() {
+        long time = stopWatch.measure();
+        String timeFormatted = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(time), TimeUnit.MILLISECONDS.toSeconds(time) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time)));
+        Log.d(TAG, "Stopwatch output: " + timeFormatted);
+        stopWatchTextView.setText(timeFormatted);
+      }
+    }, 0, 1000);
+  }
+
+  private void initChannels() {
 	    aileronChannel  = settings.getChannel(Channel.CHANNEL_NAME_AILERON);
 	    elevatorChannel = settings.getChannel(Channel.CHANNEL_NAME_ELEVATOR);
 	    rudderChannel   = settings.getChannel(Channel.CHANNEL_NAME_RUDDER);
@@ -430,14 +473,23 @@ public class HudViewController extends ViewController
 
 			}
 		});
-		
-		takeOffBtn.setOnClickListener(new OnClickListener() {
+
+    stopWatchResetBtn.setOnClickListener(new OnClickListener() {
+
+      @Override
+      public void onClick(View arg0) {
+        stopWatch.reset();
+      }
+    });
+
+    takeOffBtn.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
 			    throttleChannel.setValue(-1);
 			    getRudderAndThrottleJoystick().setYValue(-1);
 				Transmitter.sharedTransmitter().transmmitSimpleCommand(OSDCommon.MSPCommnand.MSP_ARM);
+        stopWatch.start();
 			}
 		});
 		
@@ -446,6 +498,7 @@ public class HudViewController extends ViewController
 			@Override
 			public void onClick(View arg0) {
 				Transmitter.sharedTransmitter().transmmitSimpleCommand(OSDCommon.MSPCommnand.MSP_DISARM);
+        stopWatch.pause();
 			}
 		});
 		
