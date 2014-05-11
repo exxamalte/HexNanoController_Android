@@ -446,7 +446,7 @@ public class HudViewController extends ViewController
 	            @Override
 	            public void onPressed(JoystickBase joy)
 	            {
-                if (settings.isBeginnerMode()) {
+                if (settings.isHoverOnThrottleReleaseMode()) {
                   // turning off hover mode
                   aux2Channel.setValue(-1);
                   Log.d(TAG, "Turning off hover mode");
@@ -458,14 +458,13 @@ public class HudViewController extends ViewController
 	            {
 	        		rudderChannel.setValue(0.0f);
 	        		
-	        		Log.e(TAG, "rudderThrottleListener onReleased"+joy.getYValue());
+	        		Log.e(TAG, "rudderThrottleListener onReleased "+joy.getYValue());
 
-                if (settings.isBeginnerMode()) {
-                  // instead of setting the throttle to wherever the joystick currently is, put the copter into hover mode
+                throttleChannel.setValue(joy.getYValue());
+                if (settings.isHoverOnThrottleReleaseMode()) {
+                  // put the copter into hover mode
                   aux2Channel.setValue(1);
                   Log.d(TAG, "Turning on hover mode");
-                } else {
-                  throttleChannel.setValue(joy.getYValue());
                 }
 	            }
 	        };
@@ -912,9 +911,13 @@ public class HudViewController extends ViewController
 	public void beginnerModeValueDidChange(boolean isBeginnerMode) {
 		
 	}
-	
-	
-	private void registerAllBroadcastReceiver() {
+
+  @Override
+  public void hoverOnThrottleReleaseModeValueDidChange(boolean isHoverOnThrottleReleaseMode) {
+
+  }
+
+  private void registerAllBroadcastReceiver() {
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Intent.ACTION_BATTERY_CHANGED);
 		this.context.registerReceiver(receiver, filter);

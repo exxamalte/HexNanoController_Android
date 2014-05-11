@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
 import com.dd.plist.NSArray;
 import com.dd.plist.NSDictionary;
 import com.dd.plist.PropertyListParser;
@@ -14,13 +15,17 @@ import com.hexairbot.hexmini.HexMiniApplication;
 
 
 public class ApplicationSettings {
-	private final static String INTERFACE_OPACITY  = "InterfaceOpacity";
+
+  private static final String TAG = ApplicationSettings.class.getSimpleName();
+
+  private final static String INTERFACE_OPACITY  = "InterfaceOpacity";
 	private final static String IS_LEFT_HANDED     = "IsLeftHanded";
 	public final  static String IS_FIRST_RUN       = "IsFirstRun";
 	private final static String IS_ACC_MODE        = "IsAccMode";
 	private final static String IS_HEAD_FREE_MODE  = "IsHeadFreeMode";
 	private final static String IS_ALT_HOLD_MODE   = "IsAltHoldMode";
 	private final static String IS_BEGINNER_MODE   = "IsBeginnerMode";
+	private final static String IS_HOVER_ON_THROTTLE_RELEASE_MODE   = "IsHoverOnThrottleReleaseMode";
 	private final static String AILERON_DEAD_BAND  = "AileronDeadBand";
 	private final static String ELEVATOR_DEAD_BAND = "ElevatorDeadBand";
 	private final static String RUDDER_DEAD_BAND   = "RudderDeadBand";
@@ -38,6 +43,7 @@ public class ApplicationSettings {
 	private boolean isHeadFreeMode;
 	private boolean isAltHoldMode;
 	private boolean isBeginnerMode;
+	private boolean isHoverOnThrottleReleaseMode;
 	private float aileronDeadBand;
 	private float elevatorDeadBand;
 	private float rudderDeadBand;
@@ -54,12 +60,15 @@ public class ApplicationSettings {
 			data = (NSDictionary)PropertyListParser.parse(path);
 			
 			interfaceOpacity = ((NSNumber)data.objectForKey(INTERFACE_OPACITY)).floatValue();
-			isLeftHanded     = ((NSNumber)data.objectForKey(IS_LEFT_HANDED)).boolValue();
+			isLeftHanded     = ((NSNumber)data.objectForKey(IS_LEFT_HANDED))over.boolValue();
 			isAccMode        = ((NSNumber)data.objectForKey(IS_ACC_MODE)).boolValue();
 			isFirstRun       = ((NSNumber)data.objectForKey(IS_FIRST_RUN)).boolValue();
 			isHeadFreeMode   = ((NSNumber)data.objectForKey(IS_HEAD_FREE_MODE)).boolValue();
 			isAltHoldMode    = ((NSNumber)data.objectForKey(IS_ALT_HOLD_MODE)).boolValue();
 			isBeginnerMode   = ((NSNumber)data.objectForKey(IS_BEGINNER_MODE)).boolValue();
+      // special treatment for this setting as it was added later
+      NSNumber isHoverOnThrottleReleaseModeNumber = (NSNumber) data.objectForKey(IS_HOVER_ON_THROTTLE_RELEASE_MODE);
+      isHoverOnThrottleReleaseMode = (isHoverOnThrottleReleaseModeNumber != null) && isHoverOnThrottleReleaseModeNumber.boolValue();
 			aileronDeadBand  = ((NSNumber)data.objectForKey(AILERON_DEAD_BAND)).floatValue();
 			elevatorDeadBand = ((NSNumber)data.objectForKey(ELEVATOR_DEAD_BAND)).floatValue();
 			rudderDeadBand   = ((NSNumber)data.objectForKey(RUDDER_DEAD_BAND)).floatValue();
@@ -75,8 +84,7 @@ public class ApplicationSettings {
 				channels.add(oneChannel);
 			}	
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+      Log.e(TAG, "Failed to initialise application settings", e);
 		}
 	}
 	
@@ -85,15 +93,14 @@ public class ApplicationSettings {
 		try {
 			data = (NSDictionary)PropertyListParser.parse(inputStream);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+      Log.e(TAG, "Failed to initialise application settings", e);
 		}
 	}
 	
 	public boolean save(){
 		File file = new File(path);
 		try {
-			//save as xml£¬be compatible with the plist of iOS
+			//save as xmlï¿½ï¿½be compatible with the plist of iOS
 			PropertyListParser.saveAsXML(data, file);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -115,6 +122,7 @@ public class ApplicationSettings {
 		this.isHeadFreeMode = defaultSettings.isHeadFreeMode();
 		this.isAltHoldMode = defaultSettings.isAltHoldMode();
 		this.isBeginnerMode = defaultSettings.isBeginnerMode();
+		this.isHoverOnThrottleReleaseMode = defaultSettings.isHoverOnThrottleReleaseMode();
 		this.aileronDeadBand = defaultSettings.getAileronDeadBand();
 		this.elevatorDeadBand = defaultSettings.getElevatorDeadBand();
 		this.rudderDeadBand = defaultSettings.getRudderDeadBand();
@@ -212,9 +220,17 @@ public class ApplicationSettings {
 		this.isBeginnerMode = isBeginnerMode;
 		data.put(IS_BEGINNER_MODE, isBeginnerMode);
 	}
-	
 
-	public void setIsAltHoldMode(boolean isAltHoldMode) {
+  public boolean isHoverOnThrottleReleaseMode() {
+    return isHoverOnThrottleReleaseMode;
+  }
+
+  public void setIsHoverOnThrottleReleaseMode(boolean isHoverOnThrottleReleaseMode) {
+    this.isHoverOnThrottleReleaseMode = isHoverOnThrottleReleaseMode;
+    data.put(IS_HOVER_ON_THROTTLE_RELEASE_MODE, isHoverOnThrottleReleaseMode);
+  }
+
+  public void setIsAltHoldMode(boolean isAltHoldMode) {
 		this.isAltHoldMode = isAltHoldMode;
 		data.put(IS_LEFT_HANDED, isAltHoldMode);
 	}

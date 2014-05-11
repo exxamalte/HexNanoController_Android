@@ -117,4 +117,24 @@
          android:textColor="@color/white"
          android:textSize="@dimen/settings_indicator_text_size" />
 
+  <CheckBox
+    android:id="@+id/isHoverOnThrottleReleaseModeCheckBox"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignLeft="@id/rudderDeadBandSeekBar"
+    android:layout_below="@id/isHeadfreeModeCheckBox"
+    android:layout_marginTop="@dimen/settings_v_gap"
+    android:layout_toRightOf="@+id/TextView01"
+    android:button="@drawable/checkbox" />
+
+  <TextView
+    android:id="@+id/isHoverOnThrottleReleaseTitleTextView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignRight="@id/rudderDeadBandValueTextView"
+    android:layout_alignTop="@id/isHoverOnThrottleReleaseModeCheckBox"
+    android:text="@string/settings_item_hover_on_throttle_release_mode"
+    android:textColor="@color/white"
+    android:textSize="@dimen/settings_indicator_text_size" />
+
 </RelativeLayout>

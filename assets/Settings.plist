@@ -16,6 +16,8 @@
 	<false/>
 	<key>IsBeginnerMode</key>
 	<true/>
+	<key>IsHoverOnThrottleReleaseMode</key>
+	<false/>
 	<key>AileronDeadBand</key>
 	<real>0.12</real>
 	<key>ElevatorDeadBand</key>

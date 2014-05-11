@@ -118,7 +118,8 @@ public class SettingsViewController extends ViewController
     private CheckBox isAccModeCheckBox;
     private CheckBox isHeadfreeModeCheckBox;
     private CheckBox isBeginnerModeCheckBox;
-    
+    private CheckBox isHoverOnThrottleReleaseModeCheckBox;
+
     private TextView interfaceOpacityValueTextView;
     private TextView aileronAndElevatorDeadBandValueTextView;
     private TextView rudderDeadBandValueTextView;
@@ -303,7 +304,8 @@ public class SettingsViewController extends ViewController
         isAccModeCheckBox      = (CheckBox)settingsViews.get(interfacePageIdx).findViewById(R.id.isAccModeCheckBox);
         isHeadfreeModeCheckBox = (CheckBox)settingsViews.get(modePageIdx).findViewById(R.id.isHeadfreeModeCheckBox);
         isBeginnerModeCheckBox = (CheckBox)settingsViews.get(modePageIdx).findViewById(R.id.isBeginnerModeCheckBox);
-        
+        isHoverOnThrottleReleaseModeCheckBox = (CheckBox)settingsViews.get(modePageIdx).findViewById(R.id.isHoverOnThrottleReleaseModeCheckBox);
+
         interfaceOpacityValueTextView =  (TextView)settingsViews.get(interfacePageIdx).findViewById(R.id.interfaceOpacityValueTextView);
         aileronAndElevatorDeadBandValueTextView = (TextView)settingsViews.get(modePageIdx).findViewById(R.id.aileronAndElevatorDeadBandValueTextView);
         rudderDeadBandValueTextView = (TextView)settingsViews.get(modePageIdx).findViewById(R.id.rudderDeadBandValueTextView);
@@ -372,7 +374,8 @@ public class SettingsViewController extends ViewController
         isAccModeCheckBox.setChecked(settings.isAccMode());
         isHeadfreeModeCheckBox.setChecked(settings.isHeadFreeMode());
         isBeginnerModeCheckBox.setChecked(settings.isBeginnerMode());
-        
+        isHoverOnThrottleReleaseModeCheckBox.setChecked(settings.isHoverOnThrottleReleaseMode());
+
         interfaceOpacitySeekBar.setProgress((int)(settings.getInterfaceOpacity() * 100));
         safeSetText(interfaceOpacityValueTextView, interfaceOpacitySeekBar.getProgress() + "%");
         
@@ -609,8 +612,21 @@ public class SettingsViewController extends ViewController
 				}
 			}
 		});
-        
-    	interfaceOpacitySeekBarListener = new OnSeekBarChangeListener() {
+
+      isHoverOnThrottleReleaseModeCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+        @Override
+        public void onCheckedChanged(CompoundButton arg0, boolean isHoverOnThrottleReleaseMode) {
+          ApplicationSettings settings = HexMiniApplication.sharedApplicaion().getAppSettings();
+          settings.setIsHoverOnThrottleReleaseMode(isHoverOnThrottleReleaseMode);
+          settings.save();
+          if (delegate != null) {
+            delegate.hoverOnThrottleReleaseModeValueDidChange(isHoverOnThrottleReleaseMode);
+          }
+        }
+      });
+
+      interfaceOpacitySeekBarListener = new OnSeekBarChangeListener() {
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
 				ApplicationSettings settings = HexMiniApplication.sharedApplicaion().getAppSettings();

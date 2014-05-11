@@ -15,6 +15,7 @@ public interface SettingsViewControllerDelegate {
 	public void accModeValueDidChange(boolean isAccMode);
 	public void headfreeModeValueDidChange(boolean isHeadfree);
 	public void beginnerModeValueDidChange(boolean isBeginnerMode);
+	public void hoverOnThrottleReleaseModeValueDidChange(boolean isHoverOnThrottleReleaseMode);
 	public void aileronAndElevatorDeadBandValueDidChange(float newValue);
 	public void rudderDeadBandValueDidChange(float newValue);
 	
