@@ -60,7 +60,7 @@ public class ApplicationSettings {
 			data = (NSDictionary)PropertyListParser.parse(path);
 			
 			interfaceOpacity = ((NSNumber)data.objectForKey(INTERFACE_OPACITY)).floatValue();
-			isLeftHanded     = ((NSNumber)data.objectForKey(IS_LEFT_HANDED))over.boolValue();
+			isLeftHanded     = ((NSNumber)data.objectForKey(IS_LEFT_HANDED)).boolValue();
 			isAccMode        = ((NSNumber)data.objectForKey(IS_ACC_MODE)).boolValue();
 			isFirstRun       = ((NSNumber)data.objectForKey(IS_FIRST_RUN)).boolValue();
 			isHeadFreeMode   = ((NSNumber)data.objectForKey(IS_HEAD_FREE_MODE)).boolValue();
