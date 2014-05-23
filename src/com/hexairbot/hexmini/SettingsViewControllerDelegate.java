@@ -1,13 +1,7 @@
-/**
- * 
- */
 package com.hexairbot.hexmini;
-
-import android.provider.MediaStore.Video;
 
 /**
  * @author koupoo
- *
  */
 public interface SettingsViewControllerDelegate {
 	public void interfaceOpacityValueDidChange(float newValue);

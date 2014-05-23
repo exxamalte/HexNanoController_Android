@@ -12,127 +12,115 @@ import android.util.Log;
 import com.hexairbot.hexmini.modal.ApplicationSettings;
 import com.hexairbot.hexmini.util.FileHelper;
 
-public class HexMiniApplication extends Application 
-{   
-	private static final String TAG = HexMiniApplication.class.getSimpleName();
-    
-	private static HexMiniApplication instance;
-	
-	private ApplicationSettings settings;
-	private FileHelper fileHelper;
-	
-	private AppStage appStage = AppStage.UNKNOWN;
-	
-	
-	public enum AppStage{
-		UNKNOWN,
-		HUD,
-		SETTINGS
-	};
-	  
-	
-	@SuppressLint("NewApi")
-    @Override
-	public void onCreate() 
-	{
-		super.onCreate();
-		Log.d(TAG, "OnCreate");
-		
-		instance = this;
+public class HexMiniApplication extends Application {
+  private static final String TAG = HexMiniApplication.class.getSimpleName();
 
-		fileHelper = new FileHelper(this);
-		
-		copyDefaultSettingsFileIfNeeded();
-		
-		settings = new ApplicationSettings(getFilesDir() + "/Settings.plist");
-	}
-	
-	
-	@Override
-	public void onTerminate() 
-	{
-		Log.d(TAG, "OnTerminate");
-		super.onTerminate();
-	}
+  private static HexMiniApplication instance;
 
-	
-	public ApplicationSettings getAppSettings()
-	{
-		return settings;
-	}
-	
-	public FileHelper getFileHelper(){
-		return fileHelper;
-	}
-	
-	
-    public static HexMiniApplication sharedApplicaion() {  
-        return instance;  
-    }  
-    
-    
-    private void copyDefaultSettingsFileIfNeeded(){
-		String settingsFileName        = "Settings.plist";        //user
-		String defaultSettingsFileName = "DefaultSettings.plist"; //default
+  private ApplicationSettings settings;
+  private FileHelper fileHelper;
 
-		if (fileHelper.hasDataFile(settingsFileName) == false) {
-			AssetManager assetManager = getAssets();
-			
-			InputStream in = null;
-			OutputStream out = null;
-			try {
-				in = assetManager.open(settingsFileName);
-				out =  openFileOutput(settingsFileName, MODE_PRIVATE);
+  private AppStage appStage = AppStage.UNKNOWN;
 
-				byte[] buffer = new byte[1024];
-				int read;
-				while ((read = in.read(buffer)) != -1) {
-					out.write(buffer, 0, read);
-				}
+  public enum AppStage {
+    UNKNOWN,
+    HUD,
+    SETTINGS
+  }
 
-				in.close();
-				in = null;
-				out.flush();
-				out.close();
-				out = null;
-			} catch (IOException e) {
-				Log.e("tag", "Failed to copy asset file: " + settingsFileName, e);
-			}
-		}
-		
-		if (fileHelper.hasDataFile(defaultSettingsFileName) == false) {
-			AssetManager assetManager = getAssets();
-			
-			InputStream in = null;
-			OutputStream out = null;
-			try {
-				in = assetManager.open(settingsFileName);
-				out =  openFileOutput(defaultSettingsFileName, MODE_PRIVATE);
+  @SuppressLint("NewApi")
+  @Override
+  public void onCreate() {
+    super.onCreate();
+    Log.d(TAG, "OnCreate");
 
-				byte[] buffer = new byte[1024];
-				int read;
-				while ((read = in.read(buffer)) != -1) {
-					out.write(buffer, 0, read);
-				}
+    instance = this;
 
-				in.close();
-				in = null;
-				out.flush();
-				out.close();
-				out = null;
-			} catch (IOException e) {
-				Log.e("tag", "Failed to copy asset file: " + settingsFileName, e);
-			}
-		}
+    fileHelper = new FileHelper(this);
+
+    copyDefaultSettingsFileIfNeeded();
+
+    settings = new ApplicationSettings(getFilesDir() + "/Settings.plist");
+  }
+
+  @Override
+  public void onTerminate() {
+    Log.d(TAG, "OnTerminate");
+    super.onTerminate();
+  }
+
+  public ApplicationSettings getAppSettings() {
+    return settings;
+  }
+
+  public FileHelper getFileHelper() {
+    return fileHelper;
+  }
+
+  public static HexMiniApplication sharedApplicaion() {
+    return instance;
+  }
+
+  private void copyDefaultSettingsFileIfNeeded() {
+    String settingsFileName = "Settings.plist";        //user
+    String defaultSettingsFileName = "DefaultSettings.plist"; //default
+
+    if (!fileHelper.hasDataFile(settingsFileName)) {
+      AssetManager assetManager = getAssets();
+
+      InputStream in;
+      OutputStream out;
+      try {
+        in = assetManager.open(settingsFileName);
+        out = openFileOutput(settingsFileName, MODE_PRIVATE);
+
+        byte[] buffer = new byte[1024];
+        int read;
+        while ((read = in.read(buffer)) != -1) {
+          out.write(buffer, 0, read);
+        }
+
+        in.close();
+        in = null;
+        out.flush();
+        out.close();
+        out = null;
+      } catch (IOException e) {
+        Log.e("tag", "Failed to copy asset file: " + settingsFileName, e);
+      }
     }
 
+    if (!fileHelper.hasDataFile(defaultSettingsFileName)) {
+      AssetManager assetManager = getAssets();
 
-	public AppStage getAppStage() {
-		return appStage;
-	}
+      InputStream in = null;
+      OutputStream out = null;
+      try {
+        in = assetManager.open(settingsFileName);
+        out = openFileOutput(defaultSettingsFileName, MODE_PRIVATE);
 
+        byte[] buffer = new byte[1024];
+        int read;
+        while ((read = in.read(buffer)) != -1) {
+          out.write(buffer, 0, read);
+        }
 
-	public void setAppStage(AppStage appStage) {
-		this.appStage = appStage;
-	}
+        in.close();
+        in = null;
+        out.flush();
+        out.close();
+        out = null;
+      } catch (IOException e) {
+        Log.e("tag", "Failed to copy asset file: " + settingsFileName, e);
+      }
+    }
+  }
+
+  public AppStage getAppStage() {
+    return appStage;
+  }
+
+  public void setAppStage(AppStage appStage) {
+    this.appStage = appStage;
+  }
 }

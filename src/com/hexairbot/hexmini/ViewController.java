@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.hexairbot.hexmini;
 
 import android.content.Context;
