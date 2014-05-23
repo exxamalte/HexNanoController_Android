@@ -253,9 +253,20 @@ public class SettingsViewController extends ViewController
 						.setMessage(R.string.dialog_disconnect)
 						.setPositiveButton(R.string.dialog_btn_yes, new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int which) {
-								Transmitter.sharedTransmitter().stop();
+								Transmitter.sharedTransmitter().transmmitSimpleCommand(OSDCommon.MSPCommnand.MSP_DISARM);
 								
-								Transmitter.sharedTransmitter().getBleConnectionManager().disconnect();
+								Handler handler = new Handler();
+								
+								handler.postDelayed(new Runnable() {
+									
+									@Override
+									public void run() {
+										Transmitter.sharedTransmitter().stop();
+										
+										Transmitter.sharedTransmitter().getBleConnectionManager().disconnect();
+									}
+								}, 10);
+								
 								connectionStateTextView.setText(R.string.settings_item_connection_state_not_conneceted);
 							}
 						}).setNegativeButton(R.string.dialog_btn_no, null).show();
@@ -437,7 +448,17 @@ public class SettingsViewController extends ViewController
 						
 						BluetoothDevice currentDevice = Transmitter.sharedTransmitter().getBleConnectionManager().getCurrentDevice();
 						if (currentDevice != null) {
-							Transmitter.sharedTransmitter().getBleConnectionManager().closeCurrentGatt();
+							Transmitter.sharedTransmitter().transmmitSimpleCommand(OSDCommon.MSPCommnand.MSP_DISARM);
+							
+							Handler handler = new Handler();
+							
+							handler.postDelayed(new Runnable() {
+								
+								@Override
+								public void run() {
+									Transmitter.sharedTransmitter().getBleConnectionManager().closeCurrentGatt();
+								}
+							}, 10);
 						}
 
 						connectionStateTextView.setText(R.string.settings_item_connection_state_not_conneceted);
