@@ -40,14 +40,13 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 public class HudViewController extends ViewController
-  implements OnTouchListener,
-  OnGestureListener,
-  SettingsViewControllerDelegate, DeviceOrientationChangeDelegate {
+  implements OnTouchListener, OnGestureListener, SettingsViewControllerDelegate, DeviceOrientationChangeDelegate {
+
   private static final String TAG = "HudViewController";
 
   private static final int JOY_ID_LEFT = 1;
   private static final int JOY_ID_RIGHT = 2;
-  private static final int MIDLLE_BG_ID = 3;
+  private static final int MIDDLE_BG_ID = 3;
   private static final int TOP_BAR_ID = 4;
   private static final int BOTTOM_BAR_ID = 5;
   private static final int TAKE_OFF_BTN_ID = 6;
@@ -57,8 +56,8 @@ public class HudViewController extends ViewController
   private static final int STATE_TEXT_VIEW = 10;
   private static final int BATTERY_INDICATOR_ID = 11;
   private static final int HELP_BTN = 12;
-  private static final int BOTTOM_LEFT_SKREW = 13;
-  private static final int BOTTOM_RIGHT_SKREW = 14;
+  private static final int BOTTOM_LEFT_SCREW = 13;
+  private static final int BOTTOM_RIGHT_SCREW = 14;
   private static final int LOGO = 15;
   private static final int STATUS_BAR = 16;
   private static final int STOPWATCH_BAR = 17;
@@ -115,7 +114,7 @@ public class HudViewController extends ViewController
   private Channel aux4Channel;
 
   private DeviceOrientationManager deviceOrientationManager;
-  private static final float ACCELERO_TRESHOLD = (float) Math.PI / 180.0f * 2.0f;
+  private static final float ACCELERO_THRESHOLD = (float) Math.PI / 180.0f * 2.0f;
   private static final int PITCH = 1;
   private static final int ROLL = 2;
   private float pitchBase;
@@ -242,11 +241,11 @@ public class HudViewController extends ViewController
     buttons[4] = helpBtn;
     buttons[5] = stopWatchResetBtn;
 
-    renderer.addSprite(MIDLLE_BG_ID, middleBg);
+    renderer.addSprite(MIDDLE_BG_ID, middleBg);
     renderer.addSprite(TOP_BAR_ID, topBarBg);
     renderer.addSprite(BOTTOM_BAR_ID, bottomBarBg);
-    renderer.addSprite(BOTTOM_LEFT_SKREW, bottomLeftSkrew);
-    renderer.addSprite(BOTTOM_RIGHT_SKREW, bottomRightSkrew);
+    renderer.addSprite(BOTTOM_LEFT_SCREW, bottomLeftSkrew);
+    renderer.addSprite(BOTTOM_RIGHT_SCREW, bottomRightSkrew);
     renderer.addSprite(LOGO, logo);
     renderer.addSprite(STATUS_BAR, statusBar);
     renderer.addSprite(BATTERY_INDICATOR_ID, batteryIndicator);
@@ -260,11 +259,9 @@ public class HudViewController extends ViewController
     renderer.addSprite(STOPWATCH_RESET_BTN_ID, stopWatchResetBtn);
     //renderer.addSprite(HELP_BTN, helpBtn);
 
-
     isAccMode = settings.isAccMode();
     deviceOrientationManager = new DeviceOrientationManager(new DeviceSensorManagerWrapper(this.context), this);
     deviceOrientationManager.onCreate();
-
 
     initJoystickListeners();
 
@@ -349,7 +346,7 @@ public class HudViewController extends ViewController
   private void initJoystickListeners() {
     rollPitchListener = new JoystickListener() {
       public void onChanged(JoystickBase joy, float x, float y) {
-        if (HexMiniApplication.sharedApplicaion().getAppStage() == AppStage.SETTINGS) {
+        if (HexMiniApplication.sharedApplication().getAppStage() == AppStage.SETTINGS) {
           Log.e(TAG, "AppStage.SETTINGS ignore rollPitchListener onChanged");
           return;
         }
@@ -384,7 +381,7 @@ public class HudViewController extends ViewController
 
     rudderThrottleListener = new JoystickListener() {
       public void onChanged(JoystickBase joy, float x, float y) {
-        if (HexMiniApplication.sharedApplicaion().getAppStage() == AppStage.SETTINGS) {
+        if (HexMiniApplication.sharedApplication().getAppStage() == AppStage.SETTINGS) {
           Log.e(TAG, "AppStage.SETTINGS ignore rudderThrottleListener onChanged");
           return;
         }
@@ -801,7 +798,7 @@ public class HudViewController extends ViewController
       if (isAccMode) {
         Log.d(TAG, "ROLL:" + (-x) + ",PITCH:" + y);
 
-        if (Math.abs(x) > ACCELERO_TRESHOLD || Math.abs(y) > ACCELERO_TRESHOLD) {
+        if (Math.abs(x) > ACCELERO_THRESHOLD || Math.abs(y) > ACCELERO_THRESHOLD) {
           if (settings.isBeginnerMode()) {
             aileronChannel.setValue(-x * BEGINNER_AILERON_CHANNEL_RATIO);
             elevatorChannel.setValue(y * BEGINNER_ELEVATOR_CHANNEL_RATIO);
@@ -859,7 +856,6 @@ public class HudViewController extends ViewController
 
     @Override
     public void onReceive(Context arg0, Intent intent) {
-      // TODO Auto-generated method stub
       String action = intent.getAction();
       if (action.equals(Intent.ACTION_BATTERY_CHANGED)) {
         final int level = intent.getIntExtra(

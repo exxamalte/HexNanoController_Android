@@ -57,7 +57,7 @@ public class HexMiniApplication extends Application {
     return fileHelper;
   }
 
-  public static HexMiniApplication sharedApplicaion() {
+  public static HexMiniApplication sharedApplication() {
     return instance;
   }
 

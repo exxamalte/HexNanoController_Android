@@ -107,7 +107,7 @@ public class ApplicationSettings {
   }
 
   public void resetToDefault() {
-    ApplicationSettings defaultSettings = new ApplicationSettings(HexMiniApplication.sharedApplicaion().getFilesDir() + "/DefaultSettings.plist");
+    ApplicationSettings defaultSettings = new ApplicationSettings(HexMiniApplication.sharedApplication().getFilesDir() + "/DefaultSettings.plist");
 
     this.data = defaultSettings.getData();
 

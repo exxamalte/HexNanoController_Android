@@ -36,16 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-//import android.webkit.WebView;
-//import com.hexairbot.hexmini.drone.DroneConfig;
-//import com.hexairbot.hexmini.drone.DroneConfig.EDroneVersion;
-//import  com.hexairbot.hexmini.ui.adapters.SettingsViewAdapter;
-//import  com.hexairbot.hexmini.ui.controls.ViewPagerIndicator;
-//import  com.hexairbot.hexmini.ui.filters.NetworkNameFilter;
-//import  com.hexairbot.hexmini.ui.listeners.OnSeekChangedListener;
-//import  com.hexairbot.hexmini.utils.FontUtils;
-
-
 public class SettingsViewController extends ViewController
   implements OnPageChangeListener,
   OnClickListener, BleConnectionManagerDelegate {
@@ -295,7 +285,6 @@ public class SettingsViewController extends ViewController
     WebView aboutWebView = (WebView) settingsViews.get(aboutPageIdx).findViewById(R.id.aboutWebView);
     aboutWebView.getSettings().setJavaScriptEnabled(true);
 
-
     String language = Locale.getDefault().getLanguage();
 
     if ("zh".equals(language)) {
@@ -341,7 +330,7 @@ public class SettingsViewController extends ViewController
   }
 
   private void updateSettingsUI() {
-    ApplicationSettings settings = HexMiniApplication.sharedApplicaion().getAppSettings();
+    ApplicationSettings settings = HexMiniApplication.sharedApplication().getAppSettings();
 
     isLeftHandedCheckBox.setChecked(settings.isLeftHanded());
     isAccModeCheckBox.setChecked(settings.isAccMode());
@@ -512,7 +501,7 @@ public class SettingsViewController extends ViewController
           .setMessage(R.string.dialog_reset)
           .setPositiveButton(R.string.dialog_btn_yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-              ApplicationSettings settings = HexMiniApplication.sharedApplicaion().getAppSettings();
+              ApplicationSettings settings = HexMiniApplication.sharedApplication().getAppSettings();
 
               settings.resetToDefault();
 
@@ -542,7 +531,7 @@ public class SettingsViewController extends ViewController
 
       @Override
       public void onCheckedChanged(CompoundButton arg0, boolean isLeftHanded) {
-        ApplicationSettings settings = HexMiniApplication.sharedApplicaion().getAppSettings();
+        ApplicationSettings settings = HexMiniApplication.sharedApplication().getAppSettings();
         settings.setLeftHanded(isLeftHanded);
         settings.save();
         if (delegate != null) {
@@ -555,7 +544,7 @@ public class SettingsViewController extends ViewController
     isAccModeCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
       @Override
       public void onCheckedChanged(CompoundButton arg0, boolean isAccMode) {
-        ApplicationSettings settings = HexMiniApplication.sharedApplicaion().getAppSettings();
+        ApplicationSettings settings = HexMiniApplication.sharedApplication().getAppSettings();
         settings.setIsAccMode(isAccMode);
         settings.save();
         if (delegate != null) {
@@ -568,7 +557,7 @@ public class SettingsViewController extends ViewController
 
       @Override
       public void onCheckedChanged(CompoundButton arg0, boolean isHeadfree) {
-        ApplicationSettings settings = HexMiniApplication.sharedApplicaion().getAppSettings();
+        ApplicationSettings settings = HexMiniApplication.sharedApplication().getAppSettings();
         settings.setIsHeadFreeMode(isHeadfree);
         settings.save();
         if (delegate != null) {
@@ -581,7 +570,7 @@ public class SettingsViewController extends ViewController
 
       @Override
       public void onCheckedChanged(CompoundButton arg0, boolean isBeginnerMode) {
-        ApplicationSettings settings = HexMiniApplication.sharedApplicaion().getAppSettings();
+        ApplicationSettings settings = HexMiniApplication.sharedApplication().getAppSettings();
         settings.setIsBeginnerMode(isBeginnerMode);
         settings.save();
         if (delegate != null) {
@@ -594,7 +583,7 @@ public class SettingsViewController extends ViewController
 
       @Override
       public void onCheckedChanged(CompoundButton arg0, boolean isHoverOnThrottleReleaseMode) {
-        ApplicationSettings settings = HexMiniApplication.sharedApplicaion().getAppSettings();
+        ApplicationSettings settings = HexMiniApplication.sharedApplication().getAppSettings();
         settings.setIsHoverOnThrottleReleaseMode(isHoverOnThrottleReleaseMode);
         settings.save();
         if (delegate != null) {
@@ -606,7 +595,7 @@ public class SettingsViewController extends ViewController
     interfaceOpacitySeekBarListener = new OnSeekBarChangeListener() {
       @Override
       public void onStopTrackingTouch(SeekBar seekBar) {
-        ApplicationSettings settings = HexMiniApplication.sharedApplicaion().getAppSettings();
+        ApplicationSettings settings = HexMiniApplication.sharedApplication().getAppSettings();
         settings.setInterfaceOpacity(seekBar.getProgress() / 100.0f);
         settings.save();
 
@@ -630,7 +619,7 @@ public class SettingsViewController extends ViewController
     aileronAndElevatorDeadBandSeekBarListener = new OnSeekBarChangeListener() {
       @Override
       public void onStopTrackingTouch(SeekBar seekBar) {
-        ApplicationSettings settings = HexMiniApplication.sharedApplicaion().getAppSettings();
+        ApplicationSettings settings = HexMiniApplication.sharedApplication().getAppSettings();
         settings.setAileronDeadBand(seekBar.getProgress() / 100.f);
         settings.setElevatorDeadBand(settings.getAileronDeadBand());
         settings.save();
@@ -642,7 +631,6 @@ public class SettingsViewController extends ViewController
 
       @Override
       public void onStartTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
       }
 
       @Override
@@ -656,7 +644,7 @@ public class SettingsViewController extends ViewController
     rudderDeadBandSeekBarListener = new OnSeekBarChangeListener() {
       @Override
       public void onStopTrackingTouch(SeekBar seekBar) {
-        ApplicationSettings settings = HexMiniApplication.sharedApplicaion().getAppSettings();
+        ApplicationSettings settings = HexMiniApplication.sharedApplication().getAppSettings();
         settings.setRudderDeadBand(seekBar.getProgress() / 100.f);
         settings.save();
 
@@ -667,7 +655,6 @@ public class SettingsViewController extends ViewController
 
       @Override
       public void onStartTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
       }
 
       @Override

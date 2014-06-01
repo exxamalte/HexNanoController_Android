@@ -59,7 +59,7 @@ public class SettingsDialog extends DialogFragment {
 
     settingsVC.viewWillAppear();
 
-    HexMiniApplication.sharedApplicaion().setAppStage(AppStage.SETTINGS);
+    HexMiniApplication.sharedApplication().setAppStage(AppStage.SETTINGS);
 
     Log.d(TAG, "onStart sendBleEnableRequest");
   }
@@ -68,7 +68,7 @@ public class SettingsDialog extends DialogFragment {
   public void onStop() {
     super.onStop();
 
-    HexMiniApplication.sharedApplicaion().setAppStage(AppStage.HUD);
+    HexMiniApplication.sharedApplication().setAppStage(AppStage.HUD);
 
     Log.d(TAG, "settingsVC viewWillDisappear");
 

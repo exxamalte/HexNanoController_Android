@@ -34,7 +34,7 @@ public class HudActivity extends FragmentActivity implements SettingsDialogDeleg
     hudVC = new HudViewController(this, this);
     hudVC.onCreate();
 
-    ApplicationSettings settings = HexMiniApplication.sharedApplicaion()
+    ApplicationSettings settings = HexMiniApplication.sharedApplication()
       .getAppSettings();
 
 		/*
@@ -50,7 +50,7 @@ public class HudActivity extends FragmentActivity implements SettingsDialogDeleg
   @Override
   protected void onResume() {
     super.onResume();
-    HexMiniApplication.sharedApplicaion().setAppStage(AppStage.HUD);
+    HexMiniApplication.sharedApplication().setAppStage(AppStage.HUD);
     hudVC.onResume();
   }
 
