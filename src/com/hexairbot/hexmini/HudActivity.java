@@ -121,7 +121,7 @@ public class HudActivity extends FragmentActivity implements SettingsDialogDeleg
     super.onDestroy();
 
     if (Transmitter.sharedTransmitter().getBleConnectionManager() != null) {
-      Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommnand.MSP_DISARM);
+      Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_DISARM);
       Transmitter.sharedTransmitter().getBleConnectionManager().close();
     }
 

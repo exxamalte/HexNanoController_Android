@@ -64,7 +64,7 @@ public class Transmitter {
     }
   }
 
-  public boolean transmitSimpleCommand(OSDCommon.MSPCommnand commnand) {
+  public boolean transmitSimpleCommand(OSDCommon.MSPCommand commnand) {
     transmitData(OSDCommon.getSimpleCommand(commnand));
     return true;
   }
@@ -75,7 +75,7 @@ public class Transmitter {
       bleConnectionManager.sendData(dataPackage);
     }
     /*
-		handler.post(new Runnable() {
+    handler.post(new Runnable() {
 			
 			@Override
 			public void run() {
@@ -94,7 +94,7 @@ public class Transmitter {
     dataPackage[1] = 'M';
     dataPackage[2] = '<';
     dataPackage[3] = 4;
-    dataPackage[4] = (byte) (OSDCommon.MSPCommnand.MSP_SET_RAW_RC_TINY.value());
+    dataPackage[4] = (byte) (OSDCommon.MSPCommand.MSP_SET_RAW_RC_TINY.value());
 
     updateDataPackage();
   }

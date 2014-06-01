@@ -37,8 +37,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class SettingsViewController extends ViewController
-  implements OnPageChangeListener,
-  OnClickListener, BleConnectionManagerDelegate {
+  implements OnPageChangeListener, OnClickListener, BleConnectionManagerDelegate {
 
   private static final String TAG = SettingsViewController.class.getSimpleName();
 
@@ -206,7 +205,7 @@ public class SettingsViewController extends ViewController
             .setMessage(R.string.dialog_disconnect)
             .setPositiveButton(R.string.dialog_btn_yes, new DialogInterface.OnClickListener() {
               public void onClick(DialogInterface dialog, int which) {
-                Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommnand.MSP_DISARM);
+                Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_DISARM);
 
                 Handler handler = new Handler();
 
@@ -394,7 +393,7 @@ public class SettingsViewController extends ViewController
 
             BluetoothDevice currentDevice = Transmitter.sharedTransmitter().getBleConnectionManager().getCurrentDevice();
             if (currentDevice != null) {
-              Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommnand.MSP_DISARM);
+              Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_DISARM);
 
               Handler handler = new Handler();
 
@@ -431,7 +430,7 @@ public class SettingsViewController extends ViewController
       @Override
       public void onClick(View arg0) {
         Log.d(TAG, "MSP_TRIM_UP");
-        Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommnand.MSP_TRIM_UP);
+        Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_TRIM_UP);
       }
     });
 
@@ -440,7 +439,7 @@ public class SettingsViewController extends ViewController
       @Override
       public void onClick(View arg0) {
         Log.d(TAG, "MSP_TRIM_DOWN");
-        Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommnand.MSP_TRIM_DOWN);
+        Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_TRIM_DOWN);
       }
     });
 
@@ -449,7 +448,7 @@ public class SettingsViewController extends ViewController
       @Override
       public void onClick(View arg0) {
         Log.d(TAG, "MSP_TRIM_LEFT");
-        Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommnand.MSP_TRIM_LEFT);
+        Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_TRIM_LEFT);
       }
     });
 
@@ -458,7 +457,7 @@ public class SettingsViewController extends ViewController
       @Override
       public void onClick(View arg0) {
         Log.d(TAG, "MSP_TRIM_RIGHT");
-        Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommnand.MSP_TRIM_RIGHT);
+        Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_TRIM_RIGHT);
       }
     });
 
@@ -471,7 +470,7 @@ public class SettingsViewController extends ViewController
           .setMessage(R.string.dialog_calibrate_mag)
           .setPositiveButton(R.string.dialog_btn_yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-              Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommnand.MSP_MAG_CALIBRATION);
+              Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_MAG_CALIBRATION);
             }
           }).setNegativeButton(R.string.dialog_btn_no, null).show();
       }
@@ -486,7 +485,7 @@ public class SettingsViewController extends ViewController
           .setMessage(R.string.dialog_calibrate_acc)
           .setPositiveButton(R.string.dialog_btn_yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-              Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommnand.MSP_ACC_CALIBRATION);
+              Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_ACC_CALIBRATION);
             }
           }).setNegativeButton(R.string.dialog_btn_no, null).show();
       }
