@@ -452,7 +452,7 @@ public class HudViewController extends ViewController
       public void onClick(View arg0) {
         throttleChannel.setValue(-1);
         getRudderAndThrottleJoystick().setYValue(-1);
-        Transmitter.sharedTransmitter().transmmitSimpleCommand(OSDCommon.MSPCommnand.MSP_ARM);
+        Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommnand.MSP_ARM);
         stopWatch.start();
       }
     });
@@ -461,7 +461,7 @@ public class HudViewController extends ViewController
 
       @Override
       public void onClick(View arg0) {
-        Transmitter.sharedTransmitter().transmmitSimpleCommand(OSDCommon.MSPCommnand.MSP_DISARM);
+        Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommnand.MSP_DISARM);
         stopWatch.pause();
       }
     });

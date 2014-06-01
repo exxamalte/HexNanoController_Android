@@ -46,7 +46,7 @@ public class Transmitter {
 
       @Override
       public void run() {
-        transmmit();
+        transmit();
       }
     }, 0, 1000 / FPS);
   }
@@ -58,18 +58,18 @@ public class Transmitter {
     }
   }
 
-  public void transmmitData(byte[] data) {
+  public void transmitData(byte[] data) {
     if (bleConnectionManager != null && bleConnectionManager.isConnected() && data != null) {
       bleConnectionManager.sendData(data);
     }
   }
 
-  public boolean transmmitSimpleCommand(OSDCommon.MSPCommnand commnand) {
-    transmmitData(OSDCommon.getSimpleCommand(commnand));
+  public boolean transmitSimpleCommand(OSDCommon.MSPCommnand commnand) {
+    transmitData(OSDCommon.getSimpleCommand(commnand));
     return true;
   }
 
-  private void transmmit() {
+  private void transmit() {
     updateDataPackage();
     if (bleConnectionManager != null && bleConnectionManager.isConnected() && dataPackage != null) {
       bleConnectionManager.sendData(dataPackage);
