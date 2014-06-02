@@ -31,10 +31,9 @@ import com.hexairbot.hexmini.modal.ApplicationSettings;
 import com.hexairbot.hexmini.modal.OSDCommon;
 import com.hexairbot.hexmini.modal.Transmitter;
 import com.hexairbot.hexmini.ui.control.ViewPagerIndicator;
-import com.hexairbot.hexmini.util.ReceivedDataDecoder;
+import com.hexairbot.hexmini.util.telemetry.ReceivedDataDecoder;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 

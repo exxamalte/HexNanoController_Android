@@ -1,4 +1,4 @@
-package com.hexairbot.hexmini.util;
+package com.hexairbot.hexmini.util.telemetry;
 
 import android.util.Log;
 import com.hexairbot.hexmini.modal.OSDCommon;
@@ -129,7 +129,7 @@ public class ReceivedDataDecoder {
           double vario = read32(Arrays.copyOfRange(payload, 4, 6));
           Log.i(TAG, "ALTITUDE: altitude=" + String.format("%.2f", altitude) + ", vario=" + String.format("%.2f", vario));
         } else {
-          Log.w(TAG, "Command ALTITUDE expecting 4 bytes of data, found: " + (payload == null ? "<empty>" : payload.length));
+          Log.w(TAG, "Command ALTITUDE expecting 6 bytes of data, found: " + (payload == null ? "<empty>" : payload.length));
         }
         break;
       case MSP_ATTITUDE:
@@ -145,8 +145,20 @@ public class ReceivedDataDecoder {
           Log.i(TAG, "ATTITUDE: angx=" + String.format("%.2f", angx) + ", angy=" + String.format("%.2f", angy)
             + ", heading=" + String.format("%.2f", heading) + ", headFreeModeHold=" + String.format("%.2f", headFreeModeHold));
         } else {
-          Log.w(TAG, "Command ATTITUDE expecting 6 bytes of data, found: " + (payload == null ? "<empty>" : payload.length));
+          Log.w(TAG, "Command ATTITUDE expecting 8 bytes of data, found: " + (payload == null ? "<empty>" : payload.length));
         }
+        break;
+      case MSP_ARM:
+        Log.i(TAG, "ARM: <no data>");
+        break;
+      case MSP_DISARM:
+        Log.i(TAG, "DISARM: <no data>");
+        break;
+      case MSP_ACC_CALIBRATION:
+        Log.i(TAG, "ACC_CALIBRATION: <no data>");
+        break;
+      case MSP_MAG_CALIBRATION:
+        Log.i(TAG, "MAG_CALIBRATION: <no data>");
         break;
       default:
         Log.i(TAG, "Not handling commands of type " + command + " at the moment.");

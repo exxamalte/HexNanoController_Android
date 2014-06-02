@@ -1,4 +1,4 @@
-package com.hexairbot.hexmini.util;
+package com.hexairbot.hexmini.util.telemetry;
 
 import com.hexairbot.hexmini.modal.OSDCommon;
 import com.hexairbot.hexmini.modal.Transmitter;
@@ -11,7 +11,7 @@ import java.util.TimerTask;
  *
  * @author Malte Franken
  */
-public class TelemetryDataCapturer {
+public class TelemetryDataRequester {
   public static final long LOG_PERIOD_IN_MILLIS = 1000;
 
   private Timer timer = new Timer();

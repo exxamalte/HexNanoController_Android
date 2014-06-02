@@ -34,7 +34,7 @@ import com.hexairbot.hexmini.ui.joystick.*;
 import com.hexairbot.hexmini.ui.joystick.JoystickFactory.JoystickType;
 import com.hexairbot.hexmini.util.FontUtils;
 import com.hexairbot.hexmini.util.StopWatch;
-import com.hexairbot.hexmini.util.TelemetryDataCapturer;
+import com.hexairbot.hexmini.util.telemetry.TelemetryDataRequester;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -126,7 +126,7 @@ public class HudViewController extends ViewController
   private Text stopWatchTextView;
   private StopWatch stopWatch;
 
-  private TelemetryDataCapturer telemetryDataCapturer = new TelemetryDataCapturer();
+  private TelemetryDataRequester telemetryDataCapturer = new TelemetryDataRequester();
 
   private LocalBroadcastManager mLocalBroadcastManager;
 
