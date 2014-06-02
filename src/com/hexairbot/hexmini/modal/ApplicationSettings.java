@@ -21,6 +21,7 @@ public class ApplicationSettings {
   private final static String IS_LEFT_HANDED = "IsLeftHanded";
   public final static String IS_FIRST_RUN = "IsFirstRun";
   private final static String IS_ACC_MODE = "IsAccMode";
+  private final static String IS_CAPTURE_TELEMETRY_DATA = "IsCaptureTelemetryData";
   private final static String IS_HEAD_FREE_MODE = "IsHeadFreeMode";
   private final static String IS_ALT_HOLD_MODE = "IsAltHoldMode";
   private final static String IS_BEGINNER_MODE = "IsBeginnerMode";
@@ -38,6 +39,7 @@ public class ApplicationSettings {
   private float interfaceOpacity;
   private boolean isLeftHanded;
   private boolean isAccMode;
+  private boolean isCaptureTelemetryData;
   private boolean isFirstRun;
   private boolean isHeadFreeMode;
   private boolean isAltHoldMode;
@@ -60,6 +62,9 @@ public class ApplicationSettings {
       interfaceOpacity = ((NSNumber) data.objectForKey(INTERFACE_OPACITY)).floatValue();
       isLeftHanded = ((NSNumber) data.objectForKey(IS_LEFT_HANDED)).boolValue();
       isAccMode = ((NSNumber) data.objectForKey(IS_ACC_MODE)).boolValue();
+      // special treatment for this setting as it was added later
+      NSNumber isCaptureTelemetryDataNumber = (NSNumber) data.objectForKey(IS_CAPTURE_TELEMETRY_DATA);
+      isCaptureTelemetryData = (isCaptureTelemetryDataNumber != null) && isCaptureTelemetryDataNumber.boolValue();
       isFirstRun = ((NSNumber) data.objectForKey(IS_FIRST_RUN)).boolValue();
       isHeadFreeMode = ((NSNumber) data.objectForKey(IS_HEAD_FREE_MODE)).boolValue();
       isAltHoldMode = ((NSNumber) data.objectForKey(IS_ALT_HOLD_MODE)).boolValue();
@@ -114,6 +119,7 @@ public class ApplicationSettings {
     this.interfaceOpacity = defaultSettings.getInterfaceOpacity();
     this.isLeftHanded = defaultSettings.isLeftHanded();
     this.isAccMode = defaultSettings.isAccMode();
+    this.isCaptureTelemetryData = defaultSettings.isCaptureTelemetryData();
     this.isFirstRun = defaultSettings.isFirstRun();
     this.isHeadFreeMode = defaultSettings.isHeadFreeMode();
     this.isAltHoldMode = defaultSettings.isAltHoldMode();
@@ -192,6 +198,15 @@ public class ApplicationSettings {
   public void setIsAccMode(boolean isAccMode) {
     this.isAccMode = isAccMode;
     data.put(IS_ACC_MODE, isAccMode);
+  }
+
+  public boolean isCaptureTelemetryData() {
+    return isCaptureTelemetryData;
+  }
+
+  public void setIsCaptureTelemetryData(boolean isCaptureTelemetryData) {
+    this.isCaptureTelemetryData = isCaptureTelemetryData;
+    data.put(IS_CAPTURE_TELEMETRY_DATA, isCaptureTelemetryData);
   }
 
   public boolean isHeadFreeMode() {

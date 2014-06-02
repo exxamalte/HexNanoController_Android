@@ -34,6 +34,7 @@ import com.hexairbot.hexmini.ui.joystick.*;
 import com.hexairbot.hexmini.ui.joystick.JoystickFactory.JoystickType;
 import com.hexairbot.hexmini.util.FontUtils;
 import com.hexairbot.hexmini.util.StopWatch;
+import com.hexairbot.hexmini.util.TelemetryDataCapturer;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -81,6 +82,7 @@ public class HudViewController extends ViewController
 
   private boolean isAltHoldMode;
   private boolean isAccMode;
+  private boolean isCaptureTelemetryData;
 
   private Button[] buttons;
 
@@ -123,6 +125,8 @@ public class HudViewController extends ViewController
 
   private Text stopWatchTextView;
   private StopWatch stopWatch;
+
+  private TelemetryDataCapturer telemetryDataCapturer = new TelemetryDataCapturer();
 
   private LocalBroadcastManager mLocalBroadcastManager;
 
@@ -283,6 +287,9 @@ public class HudViewController extends ViewController
     stopWatch = new StopWatch();
     initStopWatch(stopWatch, stopWatchTextView);
 
+    isCaptureTelemetryData = settings.isCaptureTelemetryData();
+    initTelemetryDataCapturer(isCaptureTelemetryData);
+
     initListeners();
 
     initChannels();
@@ -325,6 +332,14 @@ public class HudViewController extends ViewController
         stopWatchTextView.setText(timeFormatted);
       }
     }, 0, 1000);
+  }
+
+  private void initTelemetryDataCapturer(boolean captureTelemetryData) {
+    if (captureTelemetryData) {
+      telemetryDataCapturer.start();
+    } else {
+      telemetryDataCapturer.stop();
+    }
   }
 
   private void initChannels() {
@@ -756,6 +771,11 @@ public class HudViewController extends ViewController
     }
   }
 
+  @Override
+  public void captureTelemetryDataValueDidChange(boolean isCaptureTelemetryData) {
+    this.isCaptureTelemetryData = isCaptureTelemetryData;
+    initTelemetryDataCapturer(isCaptureTelemetryData);
+  }
 
   @Override
   public void headfreeModeValueDidChange(boolean isHeadfree) {

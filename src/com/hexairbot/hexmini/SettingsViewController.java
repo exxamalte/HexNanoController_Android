@@ -31,8 +31,10 @@ import com.hexairbot.hexmini.modal.ApplicationSettings;
 import com.hexairbot.hexmini.modal.OSDCommon;
 import com.hexairbot.hexmini.modal.Transmitter;
 import com.hexairbot.hexmini.ui.control.ViewPagerIndicator;
+import com.hexairbot.hexmini.util.ReceivedDataDecoder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -69,6 +71,7 @@ public class SettingsViewController extends ViewController
 
   private CheckBox isLeftHandedCheckBox;
   private CheckBox isAccModeCheckBox;
+  private CheckBox isCaptureTelemetryDataCheckBox;
   private CheckBox isHeadfreeModeCheckBox;
   private CheckBox isBeginnerModeCheckBox;
   private CheckBox isHoverOnThrottleReleaseModeCheckBox;
@@ -265,6 +268,7 @@ public class SettingsViewController extends ViewController
 
     isLeftHandedCheckBox = (CheckBox) settingsViews.get(interfacePageIdx).findViewById(R.id.isLeftHandedCheckBox);
     isAccModeCheckBox = (CheckBox) settingsViews.get(interfacePageIdx).findViewById(R.id.isAccModeCheckBox);
+    isCaptureTelemetryDataCheckBox = (CheckBox) settingsViews.get(interfacePageIdx).findViewById(R.id.isCaptureTelemetryDataCheckBox);
     isHeadfreeModeCheckBox = (CheckBox) settingsViews.get(modePageIdx).findViewById(R.id.isHeadfreeModeCheckBox);
     isBeginnerModeCheckBox = (CheckBox) settingsViews.get(modePageIdx).findViewById(R.id.isBeginnerModeCheckBox);
     isHoverOnThrottleReleaseModeCheckBox = (CheckBox) settingsViews.get(modePageIdx).findViewById(R.id.isHoverOnThrottleReleaseModeCheckBox);
@@ -333,6 +337,7 @@ public class SettingsViewController extends ViewController
 
     isLeftHandedCheckBox.setChecked(settings.isLeftHanded());
     isAccModeCheckBox.setChecked(settings.isAccMode());
+    isCaptureTelemetryDataCheckBox.setChecked(settings.isCaptureTelemetryData());
     isHeadfreeModeCheckBox.setChecked(settings.isHeadFreeMode());
     isBeginnerModeCheckBox.setChecked(settings.isBeginnerMode());
     isHoverOnThrottleReleaseModeCheckBox.setChecked(settings.isHoverOnThrottleReleaseMode());
@@ -548,6 +553,18 @@ public class SettingsViewController extends ViewController
         settings.save();
         if (delegate != null) {
           delegate.accModeValueDidChange(isAccMode);
+        }
+      }
+    });
+
+    isCaptureTelemetryDataCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(CompoundButton arg0, boolean isCaptureTelemetryData) {
+        ApplicationSettings settings = HexMiniApplication.sharedApplication().getAppSettings();
+        settings.setIsCaptureTelemetryData(isCaptureTelemetryData);
+        settings.save();
+        if (delegate != null) {
+          delegate.captureTelemetryDataValueDidChange(isCaptureTelemetryData);
         }
       }
     });
@@ -848,10 +865,11 @@ public class SettingsViewController extends ViewController
 
   @Override
   public void didReceiveData(BleConnectionManager manager, String data) {
-    Log.d(TAG, "didReceiveData");
-
     if (data != null) {
-      Log.d(TAG, data);
+      Log.d(TAG, "Received data: " + data);
+      ReceivedDataDecoder.decode(data);
+    } else {
+      Log.d(TAG, "Received data: <empty>");
     }
   }
 
@@ -865,13 +883,11 @@ public class SettingsViewController extends ViewController
     }
   }
 
-
   @Override
   public void viewWillAppear() {
     super.viewWillAppear();
     sendBleEnableRequest();
   }
-
 
   @Override
   public void viewWillDisappear() {

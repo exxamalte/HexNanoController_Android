@@ -51,6 +51,15 @@ public class OSDCommon {
     public int value() {
       return commandName;
     }
+
+    public static MSPCommand fromInt(int id) {
+      for (MSPCommand command : values()) {
+        if (command.value() == id) {
+          return command;
+        }
+      }
+      return null;
+    }
   }
 
   public static String getDefaultOSDDataRequest() {

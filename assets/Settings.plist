@@ -8,6 +8,8 @@
 	<true/>
 	<key>IsAccMode</key>
 	<false/>
+	<key>IsCaptureTelemetryData</key>
+	<false/>
 	<key>PpmPolarityIsNegative</key>
 	<false/>
 	<key>IsHeadFreeMode</key>
