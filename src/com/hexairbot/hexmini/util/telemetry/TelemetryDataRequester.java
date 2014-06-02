@@ -16,19 +16,18 @@ public class TelemetryDataRequester {
 
   private Timer timer = new Timer();
 
-  private TimerTask task = new TimerTask() {
-    @Override
-    public void run() {
-      Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_RAW_IMU);
-      Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_ALTITUDE);
-      Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_ATTITUDE);
-    }
-  };
-
   public void start() {
     // stop all tasks just in case this method is called twice
     timer.cancel();
-    timer.schedule(task, 0, LOG_PERIOD_IN_MILLIS);
+    timer = new Timer();
+    timer.schedule(new TimerTask() {
+      @Override
+      public void run() {
+        Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_RAW_IMU);
+        Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_ALTITUDE);
+        Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_ATTITUDE);
+      }
+    }, 0, LOG_PERIOD_IN_MILLIS);
   }
 
   public void stop() {

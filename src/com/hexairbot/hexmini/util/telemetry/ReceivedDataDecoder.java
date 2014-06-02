@@ -32,11 +32,10 @@ public class ReceivedDataDecoder {
    * @param data the data to decode
    */
   public static void decode(String data) {
+    assert data != null;
     // if some data has been captured before, let's just concatenate everything and try to decode again
-    //receivedDataBuffer.append(incoming);
-    //String data = receivedDataBuffer.toString();
-    //receivedDataBuffer.delete(0, receivedDataBuffer.length()-1);
     byte[] bytes = data.getBytes();
+    Log.v(TAG, "Data to decode: " + Arrays.toString(bytes));
     Log.d(TAG, "Data package length: " + bytes.length);
     if (data.startsWith(MSP_HEADER_RECEIVING)) {
       Log.d(TAG, "Header detected");
@@ -53,6 +52,7 @@ public class ReceivedDataDecoder {
       // check command
       if (bytes.length >= 5) {
         int command = bytes[4];
+        Log.v(TAG, "Raw command: " + command);
         checksum ^= command;
         mspCommand = OSDCommon.MSPCommand.fromInt(command);
         Log.d(TAG, "Command: " + mspCommand);
@@ -126,7 +126,7 @@ public class ReceivedDataDecoder {
           // altitude
           double altitude = read32(Arrays.copyOfRange(payload, 0, 4)) / 100;
           // vario
-          double vario = read32(Arrays.copyOfRange(payload, 4, 6));
+          double vario = read16(Arrays.copyOfRange(payload, 4, 6));
           Log.i(TAG, "ALTITUDE: altitude=" + String.format("%.2f", altitude) + ", vario=" + String.format("%.2f", vario));
         } else {
           Log.w(TAG, "Command ALTITUDE expecting 6 bytes of data, found: " + (payload == null ? "<empty>" : payload.length));
