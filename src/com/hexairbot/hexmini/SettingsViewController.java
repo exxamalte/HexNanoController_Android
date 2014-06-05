@@ -684,7 +684,7 @@ public class SettingsViewController extends ViewController
     };
     rudderDeadBandSeekBar.setOnSeekBarChangeListener(rudderDeadBandSeekBarListener);
     // register telemetry data listeners
-    receivedDataDecoder.registerTelemetryDataListener(new TelemetryDataLogger());
+    receivedDataDecoder.registerTelemetryDataListener(new TelemetryDataLogger(context));
   }
 
 

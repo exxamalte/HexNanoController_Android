@@ -5,6 +5,7 @@ import com.hexairbot.hexmini.modal.OSDCommon;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -156,7 +157,7 @@ public class ReceivedDataDecoder {
             }
             if (command != null) {
               // now let anyone know who's interested in the result
-              CommandData commandData = decode(command, payload);
+              CommandData commandData = decode(command, payload, new Date());
               dataDecoded(commandData);
             }
             // and finally off to the next sequence
@@ -167,8 +168,8 @@ public class ReceivedDataDecoder {
     }
   }
 
-  public static CommandData decode(OSDCommon.MSPCommand command, byte[] payload) {
-    CommandData commandData = new CommandData(command);
+  public static CommandData decode(OSDCommon.MSPCommand command, byte[] payload, Date received) {
+    CommandData commandData = new CommandData(command, received);
     // Note: with regard to expected payload sizes, refer to corresponding code in firmware (Serial.ino)
     switch (command) {
       case MSP_RAW_IMU:
