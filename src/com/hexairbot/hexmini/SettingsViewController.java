@@ -31,7 +31,10 @@ import com.hexairbot.hexmini.modal.ApplicationSettings;
 import com.hexairbot.hexmini.modal.OSDCommon;
 import com.hexairbot.hexmini.modal.Transmitter;
 import com.hexairbot.hexmini.ui.control.ViewPagerIndicator;
+import com.hexairbot.hexmini.util.telemetry.CommandData;
 import com.hexairbot.hexmini.util.telemetry.ReceivedDataDecoder;
+import com.hexairbot.hexmini.util.telemetry.TelemetryDataListener;
+import com.hexairbot.hexmini.util.telemetry.TelemetryDataLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,6 +116,7 @@ public class SettingsViewController extends ViewController
     };
   private boolean bleAvailabed;
 
+  private ReceivedDataDecoder receivedDataDecoder = new ReceivedDataDecoder();
 
   public SettingsViewController(Context context, LayoutInflater inflater, ViewGroup container, SettingsViewControllerDelegate delegate) {
     Transmitter.sharedTransmitter().getBleConnectionManager().setDelegate(this);
@@ -679,6 +683,8 @@ public class SettingsViewController extends ViewController
       }
     };
     rudderDeadBandSeekBar.setOnSeekBarChangeListener(rudderDeadBandSeekBarListener);
+    // register telemetry data listeners
+    receivedDataDecoder.registerTelemetryDataListener(new TelemetryDataLogger());
   }
 
 
@@ -866,7 +872,8 @@ public class SettingsViewController extends ViewController
   public void didReceiveData(BleConnectionManager manager, String data) {
     if (data != null) {
       Log.d(TAG, "Received data: " + data);
-      ReceivedDataDecoder.decode(data);
+      // sending data off to decoder
+      receivedDataDecoder.add(data);
     } else {
       Log.d(TAG, "Received data: <empty>");
     }
