@@ -12,7 +12,7 @@ import java.util.TimerTask;
  * @author Malte Franken
  */
 public class TelemetryDataRequester {
-  public static final long LOG_PERIOD_IN_MILLIS = 1000;
+  public static final long LOG_PERIOD_IN_MILLIS = 100;
 
   private Timer timer = new Timer();
 
