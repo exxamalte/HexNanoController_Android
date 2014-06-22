@@ -76,11 +76,27 @@ public class TelemetryDataLogger implements TelemetryDataListener {
     builder.append(DATA_SEPARATOR);
     Object payloadObject = commandData.getPayload();
     if (payloadObject != null) {
-      // currently, only arrays of double values are stored
+      // currently, only arrays of double, int or string values are stored
       if (payloadObject instanceof double[]) {
         double[] payload = (double[]) payloadObject;
-        for (int i=0; i<payload.length; i++) {
+        for (int i = 0; i < payload.length; i++) {
           builder.append(String.format("%.2f", payload[i]));
+          if (i < payload.length - 1) {
+            builder.append(DATA_SEPARATOR);
+          }
+        }
+      } else if (payloadObject instanceof int[]) {
+        int[] payload = (int[]) payloadObject;
+        for (int i = 0; i < payload.length; i++) {
+          builder.append(payload[i]);
+          if (i < payload.length - 1) {
+            builder.append(DATA_SEPARATOR);
+          }
+        }
+      } else if (payloadObject instanceof String[]) {
+        String[] payload = (String[]) payloadObject;
+        for (int i=0; i<payload.length; i++) {
+          builder.append(payload[i]);
           if (i<payload.length-1) {
             builder.append(DATA_SEPARATOR);
           }

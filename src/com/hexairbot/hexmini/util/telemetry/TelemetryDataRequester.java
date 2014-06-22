@@ -19,10 +19,20 @@ public class TelemetryDataRequester {
   public void start() {
     // stop all tasks just in case this method is called twice
     timer.cancel();
+    // regular telemetry data
     timer = new Timer();
     timer.schedule(new TimerTask() {
       @Override
       public void run() {
+        Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_STATUS);
+        //Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_SERVO);
+        Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_MOTOR);
+        Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_RC);
+        //Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_ANALOG);
+        //Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_RC_TUNING);
+        //Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_PID);
+        //Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_BOX);
+        //Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_MISC);
         Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_RAW_IMU);
         Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_ALTITUDE);
         Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_ATTITUDE);
@@ -34,4 +44,10 @@ public class TelemetryDataRequester {
     timer.cancel();
   }
 
+  public void initialRequest() {
+    // one-off telemetry data
+    Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_IDENT);
+    Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_BOXNAMES);
+    Transmitter.sharedTransmitter().transmitSimpleCommand(OSDCommon.MSPCommand.MSP_PIDNAMES);
+  }
 }

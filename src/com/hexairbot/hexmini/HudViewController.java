@@ -835,6 +835,8 @@ public class HudViewController extends ViewController
   public void didConnect() {
     String state = context.getResources().getString(R.string.settings_item_connection_state_conneceted);
     stateTextView.setText(state);
+    // try to capture one-off telemetry data
+    telemetryDataCapturer.initialRequest();
   }
 
   @Override

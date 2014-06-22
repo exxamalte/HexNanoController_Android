@@ -151,7 +151,7 @@ public class ReceivedDataDecoder {
             // this must be our checksum
             if ((checksum & CHECKSUM_MASK) != b) {
               // TODO: do anything other than logging here?
-              Log.w(TAG, "Checksum not matching, expected " + (checksum & CHECKSUM_MASK) + ", but received " + b);
+              Log.w(TAG, "Checksum not matching, expected " + (checksum & CHECKSUM_MASK) + ", but received " + b + ", command: " + command);
             } else {
               Log.d(TAG, "Checksum matches");
             }
@@ -172,6 +172,50 @@ public class ReceivedDataDecoder {
     CommandData commandData = new CommandData(command, received);
     // Note: with regard to expected payload sizes, refer to corresponding code in firmware (Serial.ino)
     switch (command) {
+      case MSP_IDENT:
+        if ((payload != null) && (payload.length == 7)) {
+          // version
+          int version = read8(Arrays.copyOfRange(payload, 0, 1));
+          // multitype
+          int multitype = read8(Arrays.copyOfRange(payload, 1, 2));
+          // msp version
+          int mspVersion = read8(Arrays.copyOfRange(payload, 2, 3));
+          // capability
+          int capability = read32(Arrays.copyOfRange(payload, 3, 7));
+          commandData.setPayload(new int[]{version, multitype, mspVersion, capability});
+          Log.i(TAG, "IDENT: version=" + version + ", multitype=" + multitype
+            + ", msp version=" + mspVersion + ", capability=" + capability);
+        } else {
+          Log.w(TAG, "Command IDENT expecting 7 bytes of data, found: " + (payload == null ? "<empty>" : payload.length));
+        }
+        break;
+      case MSP_STATUS:
+        if ((payload != null) && (payload.length == 11)) {
+          // cycle time
+          int cycleTime = read16(Arrays.copyOfRange(payload, 0, 2));
+          // i2c error
+          int i2cError = read16(Arrays.copyOfRange(payload, 2, 4));
+          // present
+          int present = read16(Arrays.copyOfRange(payload, 4, 6));
+          boolean presentAccelerometer = ((present & 1) > 0);
+          boolean presentBarometer = ((present & 2) > 0);
+          boolean presentMagnetometer = ((present & 4) > 0);
+          boolean presentGps = ((present & 8) > 0);
+          boolean presentSonar = ((present & 16) > 0);
+          // mode
+          int mode = read32(Arrays.copyOfRange(payload, 6, 10));
+          // current setting
+          int currentSetting = read8(Arrays.copyOfRange(payload, 10, 11));
+          commandData.setPayload(new Object[]{cycleTime, i2cError, presentAccelerometer, presentBarometer, presentMagnetometer, presentGps, presentSonar, mode, currentSetting});
+          Log.i(TAG, "STATUS: cycle time=" + cycleTime + ", i2c error=" + i2cError
+            + ", accelerometer=" + presentAccelerometer + ", barometer=" + presentBarometer
+            + ", magnetometer=" + presentMagnetometer + ", gps=" + presentGps
+            + ", sonar=" + presentSonar + ", mode=" + mode
+            + ", current setting=" + currentSetting);
+        } else {
+          Log.w(TAG, "Command STATUS expecting 11 bytes of data, found: " + (payload == null ? "<empty>" : payload.length));
+        }
+        break;
       case MSP_RAW_IMU:
         if ((payload != null) && (payload.length == 18)) {
           // acc
@@ -196,16 +240,52 @@ public class ReceivedDataDecoder {
           Log.w(TAG, "Command RAW_IMU expecting 18 bytes of data, found: " + (payload == null ? "<empty>" : payload.length));
         }
         break;
-      case MSP_ALTITUDE:
-        if ((payload != null) && (payload.length == 6)) {
-          // altitude
-          double altitude = read32(Arrays.copyOfRange(payload, 0, 4)) / 100;
-          // vario
-          double vario = read16(Arrays.copyOfRange(payload, 4, 6));
-          commandData.setPayload(new double[]{altitude, vario});
-          Log.i(TAG, "ALTITUDE: altitude=" + String.format("%.2f", altitude) + ", vario=" + String.format("%.2f", vario));
+      case MSP_MOTOR:
+        if ((payload != null) && (payload.length == 16)) {
+          // maximum of 8 motors, still need to figure out how many the transmitting copter actually has (4 or 6 in case of Flexbot)
+          double motor0 = read16(Arrays.copyOfRange(payload, 0, 2));
+          double motor1 = read16(Arrays.copyOfRange(payload, 2, 4));
+          double motor2 = read16(Arrays.copyOfRange(payload, 4, 6));
+          double motor3 = read16(Arrays.copyOfRange(payload, 6, 8));
+          double motor4 = read16(Arrays.copyOfRange(payload, 8, 10));
+          double motor5 = read16(Arrays.copyOfRange(payload, 10, 12));
+          double motor6 = read16(Arrays.copyOfRange(payload, 12, 14));
+          double motor7 = read16(Arrays.copyOfRange(payload, 14, 16));
+          commandData.setPayload(new double[]{motor0, motor1, motor2, motor3, motor4, motor5, motor6, motor7});
+          Log.i(TAG, "MOTOR: motor 0=" + String.format("%.2f", motor0) + ", motor 1=" + String.format("%.2f", motor1)
+            + ", motor 2=" + String.format("%.2f", motor2) + ", motor 3=" + String.format("%.2f", motor3)
+            + ", motor 4=" + String.format("%.2f", motor4) + ", motor 5=" + String.format("%.2f", motor5)
+            + ", motor 6=" + String.format("%.2f", motor6) + ", motor 7=" + String.format("%.2f", motor7));
         } else {
-          Log.w(TAG, "Command ALTITUDE expecting 6 bytes of data, found: " + (payload == null ? "<empty>" : payload.length));
+          Log.w(TAG, "Command MOTOR expecting 16 bytes of data, found: " + (payload == null ? "<empty>" : payload.length));
+        }
+        break;
+      case MSP_RC:
+        // note: expecting payload of 16 bytes in our Flexbot setting, could be different in other settings
+        if ((payload != null) && (payload.length == 16)) {
+          // rc roll
+          double roll = read16(Arrays.copyOfRange(payload, 0, 2));
+          // rc pitch
+          double pitch = read16(Arrays.copyOfRange(payload, 2, 4));
+          // rc yaw
+          double yaw = read16(Arrays.copyOfRange(payload, 4, 6));
+          // rc throttle
+          double throttle = read16(Arrays.copyOfRange(payload, 6, 8));
+          // rc aux1
+          double aux1 = read16(Arrays.copyOfRange(payload, 8, 10));
+          // rc aux2
+          double aux2 = read16(Arrays.copyOfRange(payload, 10, 12));
+          // rc aux3
+          double aux3 = read16(Arrays.copyOfRange(payload, 12, 14));
+          // rc aux4
+          double aux4 = read16(Arrays.copyOfRange(payload, 14, 16));
+          commandData.setPayload(new double[]{roll, pitch, yaw, throttle, aux1, aux2, aux3, aux4});
+          Log.i(TAG, "RC: roll=" + String.format("%.2f", roll) + ", pitch=" + String.format("%.2f", pitch)
+            + ", yaw=" + String.format("%.2f", yaw) + ", throttle=" + String.format("%.2f", throttle)
+            + ", aux1=" + String.format("%.2f", aux1) + ", aux2=" + String.format("%.2f", aux2)
+            + ", aux3=" + String.format("%.2f", aux3) + ", aux4=" + String.format("%.2f", aux4));
+        } else {
+          Log.w(TAG, "Command RC expecting 16 bytes of data, found: " + (payload == null ? "<empty>" : payload.length));
         }
         break;
       case MSP_ATTITUDE:
@@ -225,6 +305,38 @@ public class ReceivedDataDecoder {
           Log.w(TAG, "Command ATTITUDE expecting 8 bytes of data, found: " + (payload == null ? "<empty>" : payload.length));
         }
         break;
+      case MSP_ALTITUDE:
+        if ((payload != null) && (payload.length == 6)) {
+          // altitude
+          double altitude = read32(Arrays.copyOfRange(payload, 0, 4)) / 100;
+          // vario
+          double vario = read16(Arrays.copyOfRange(payload, 4, 6));
+          commandData.setPayload(new double[]{altitude, vario});
+          Log.i(TAG, "ALTITUDE: altitude=" + String.format("%.2f", altitude) + ", vario=" + String.format("%.2f", vario));
+        } else {
+          Log.w(TAG, "Command ALTITUDE expecting 6 bytes of data, found: " + (payload == null ? "<empty>" : payload.length));
+        }
+        break;
+      case MSP_BOXNAMES:
+        if (payload != null) {
+          String payloadString = new String(payload);
+          String[] boxnames = payloadString.split(";");
+          commandData.setPayload(boxnames);
+          Log.i(TAG, "BOXNAMES: names=" + Arrays.toString(boxnames));
+        } else {
+          Log.w(TAG, "Command BOXNAMES expecting some payload data but nothing found");
+        }
+        break;
+      case MSP_PIDNAMES:
+        if (payload != null) {
+          String payloadString = new String(payload);
+          String[] pidnames = payloadString.split(";");
+          commandData.setPayload(pidnames);
+          Log.i(TAG, "PIDNAMES: names=" + Arrays.toString(pidnames));
+        } else {
+          Log.w(TAG, "Command PIDNAMES expecting some payload data but nothing found");
+        }
+        break;
       case MSP_ARM:
         Log.i(TAG, "ARM: <no data>");
         break;
@@ -238,9 +350,15 @@ public class ReceivedDataDecoder {
         Log.i(TAG, "MAG_CALIBRATION: <no data>");
         break;
       default:
-        Log.i(TAG, "Not handling commands of type " + command + " at the moment.");
+        Log.i(TAG, "Not handling commands of type " + command + " at the moment. Payload: " + Arrays.toString(payload));
     }
     return commandData;
+  }
+
+  protected static int read8(byte[] bytes) {
+    assert bytes != null;
+    assert bytes.length == 1;
+    return (int) bytes[0];
   }
 
   protected static int read16(byte[] bytes) {
