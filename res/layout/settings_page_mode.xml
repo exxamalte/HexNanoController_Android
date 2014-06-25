@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/RelativeLayout1"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_vertical"
-    android:orientation="vertical" >
+                android:id="@+id/RelativeLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
 
-    <View
-        android:id="@+id/view1"
-        android:layout_width="80dp"
-        android:layout_height="10dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-        
-     <CheckBox
-         android:id="@+id/isBeginnerModeCheckBox"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignLeft="@+id/view1"
-         android:layout_below="@+id/view1" 
-         android:button="@drawable/checkbox" />
+  <View
+    android:id="@+id/view1"
+    android:layout_width="80dp"
+    android:layout_height="10dp"
+    android:layout_alignParentTop="true"
+    android:layout_centerHorizontal="true"/>
 
-     <TextView
-         android:id="@+id/isBeginnerModeTitleTextView"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignTop="@+id/isBeginnerModeCheckBox"
-         android:layout_marginRight="@dimen/settings_h_gap"
-         android:layout_toLeftOf="@id/isBeginnerModeCheckBox"
-         android:text="@string/settings_item_beginner_mode"
-         android:textColor="@color/white"
-         android:textSize="@dimen/settings_indicator_text_size" />
+  <CheckBox
+    android:id="@+id/isBeginnerModeCheckBox"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignLeft="@+id/view1"
+    android:layout_below="@+id/view1"
+    android:button="@drawable/checkbox"/>
+
+  <TextView
+    android:id="@+id/isBeginnerModeTitleTextView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignTop="@+id/isBeginnerModeCheckBox"
+    android:layout_marginRight="@dimen/settings_h_gap"
+    android:layout_toLeftOf="@id/isBeginnerModeCheckBox"
+    android:text="@string/settings_item_beginner_mode"
+    android:textColor="@color/white"
+    android:textSize="@dimen/settings_indicator_text_size"/>
 
   <CheckBox
     android:id="@+id/yawEnableCheckBox"
@@ -39,7 +39,7 @@
     android:layout_alignLeft="@+id/view1"
     android:layout_below="@+id/isBeginnerModeCheckBox"
     android:layout_marginTop="@dimen/settings_v_gap"
-    android:button="@drawable/checkbox" />
+    android:button="@drawable/checkbox"/>
 
   <TextView
     android:id="@+id/yawEnableTitleTextView"
@@ -50,25 +50,44 @@
     android:layout_toLeftOf="@id/yawEnableCheckBox"
     android:text="@string/settings_item_yaw_channel"
     android:textColor="@color/white"
-    android:textSize="@dimen/settings_indicator_text_size" />
+    android:textSize="@dimen/settings_indicator_text_size"/>
 
   <CheckBox
-         android:id="@+id/isHeadfreeModeCheckBox"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignLeft="@id/yawEnableCheckBox"
-         android:layout_below="@id/yawEnableCheckBox"
-         android:layout_marginTop="@dimen/settings_v_gap"
-         android:button="@drawable/checkbox" />
+    android:id="@+id/isHeadfreeModeCheckBox"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignLeft="@id/yawEnableCheckBox"
+    android:layout_below="@id/yawEnableCheckBox"
+    android:layout_marginTop="@dimen/settings_v_gap"
+    android:button="@drawable/checkbox"/>
 
-     <TextView
-         android:id="@+id/isHeadfreeModeTitleTextView"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignTop="@id/isHeadfreeModeCheckBox"
-         android:layout_toLeftOf="@id/isBeginnerModeCheckBox"
-         android:text="@string/settings_item_headfree_mode"
-         android:textColor="@color/white"
-         android:textSize="@dimen/settings_indicator_text_size" />
+  <TextView
+    android:id="@+id/isHeadfreeModeTitleTextView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignTop="@id/isHeadfreeModeCheckBox"
+    android:layout_toLeftOf="@id/isBeginnerModeCheckBox"
+    android:text="@string/settings_item_headfree_mode"
+    android:textColor="@color/white"
+    android:textSize="@dimen/settings_indicator_text_size"/>
+
+  <CheckBox
+    android:id="@+id/isHoverOnThrottleReleaseModeCheckBox"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignLeft="@id/view1"
+    android:layout_below="@id/isHeadfreeModeCheckBox"
+    android:layout_marginTop="@dimen/settings_v_gap"
+    android:button="@drawable/checkbox"/>
+
+  <TextView
+    android:id="@+id/isHoverOnThrottleReleaseTitleTextView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignTop="@id/isHoverOnThrottleReleaseModeCheckBox"
+    android:layout_toLeftOf="@id/isHoverOnThrottleReleaseModeCheckBox"
+    android:text="@string/settings_item_hover_on_throttle_release_mode"
+    android:textColor="@color/white"
+    android:textSize="@dimen/settings_indicator_text_size"/>
 
 </RelativeLayout>
