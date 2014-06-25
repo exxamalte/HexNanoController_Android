@@ -23,6 +23,7 @@ public class ApplicationSettings {
   private final static String IS_ACC_MODE = "IsAccMode";
   private final static String IS_CAPTURE_TELEMETRY_DATA = "IsCaptureTelemetryData";
   private final static String IS_HEAD_FREE_MODE = "IsHeadFreeMode";
+  private final static String YAW_ENABLE = "YawEnable";
   private final static String IS_ALT_HOLD_MODE = "IsAltHoldMode";
   private final static String IS_BEGINNER_MODE = "IsBeginnerMode";
   private final static String IS_HOVER_ON_THROTTLE_RELEASE_MODE = "IsHoverOnThrottleReleaseMode";
@@ -42,6 +43,7 @@ public class ApplicationSettings {
   private boolean isCaptureTelemetryData;
   private boolean isFirstRun;
   private boolean isHeadFreeMode;
+  private boolean yawEnable;
   private boolean isAltHoldMode;
   private boolean isBeginnerMode;
   private boolean isHoverOnThrottleReleaseMode;
@@ -67,6 +69,7 @@ public class ApplicationSettings {
       isCaptureTelemetryData = (isCaptureTelemetryDataNumber != null) && isCaptureTelemetryDataNumber.boolValue();
       isFirstRun = ((NSNumber) data.objectForKey(IS_FIRST_RUN)).boolValue();
       isHeadFreeMode = ((NSNumber) data.objectForKey(IS_HEAD_FREE_MODE)).boolValue();
+      yawEnable =  ((NSNumber)data.objectForKey(YAW_ENABLE)).boolValue();
       isAltHoldMode = ((NSNumber) data.objectForKey(IS_ALT_HOLD_MODE)).boolValue();
       isBeginnerMode = ((NSNumber) data.objectForKey(IS_BEGINNER_MODE)).boolValue();
       // special treatment for this setting as it was added later
@@ -122,6 +125,7 @@ public class ApplicationSettings {
     this.isCaptureTelemetryData = defaultSettings.isCaptureTelemetryData();
     this.isFirstRun = defaultSettings.isFirstRun();
     this.isHeadFreeMode = defaultSettings.isHeadFreeMode();
+    this.yawEnable = defaultSettings.yawEnable();
     this.isAltHoldMode = defaultSettings.isAltHoldMode();
     this.isBeginnerMode = defaultSettings.isBeginnerMode();
     this.isHoverOnThrottleReleaseMode = defaultSettings.isHoverOnThrottleReleaseMode();
@@ -216,6 +220,15 @@ public class ApplicationSettings {
   public void setIsHeadFreeMode(boolean isHeadFreeMode) {
     this.isHeadFreeMode = isHeadFreeMode;
     data.put(IS_HEAD_FREE_MODE, isHeadFreeMode);
+  }
+  
+  public boolean yawEnable() {
+    return yawEnable;
+  }
+
+  public void setYawEnable(boolean yawEnable) {
+    this.yawEnable = yawEnable;
+    data.put(YAW_ENABLE, yawEnable);
   }
 
   public boolean isAltHoldMode() {

@@ -22,6 +22,7 @@
     <string name="settings_item_acc_mode">Acc Mode</string>
     <string name="settings_item_capture_telemetry_data">Capture Telemetry Data</string>
     <string name="settings_item_headfree_mode">Headfree Mode</string>
+    <string name="settings_item_yaw_channel">Yaw Channel</string>
     <string name="settings_item_beginner_mode">Beginner Mode</string>
     <string name="settings_item_hover_on_throttle_release_mode">Hover on Throttle Release Mode</string>
     <string name="settings_item_take_off_throttle">Take Off Throttle</string>
