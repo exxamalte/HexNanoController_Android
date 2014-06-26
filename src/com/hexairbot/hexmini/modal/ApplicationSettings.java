@@ -69,7 +69,9 @@ public class ApplicationSettings {
       isCaptureTelemetryData = (isCaptureTelemetryDataNumber != null) && isCaptureTelemetryDataNumber.boolValue();
       isFirstRun = ((NSNumber) data.objectForKey(IS_FIRST_RUN)).boolValue();
       isHeadFreeMode = ((NSNumber) data.objectForKey(IS_HEAD_FREE_MODE)).boolValue();
-      yawEnable = ((NSNumber)data.objectForKey(YAW_ENABLE)).boolValue();
+      // special treatment for this setting as it was added later
+      NSNumber yawEnableDataNumber = (NSNumber) data.objectForKey(YAW_ENABLE);
+      yawEnable = (yawEnableDataNumber != null) && yawEnableDataNumber.boolValue();
       isAltHoldMode = ((NSNumber) data.objectForKey(IS_ALT_HOLD_MODE)).boolValue();
       isBeginnerMode = ((NSNumber) data.objectForKey(IS_BEGINNER_MODE)).boolValue();
       // special treatment for this setting as it was added later
