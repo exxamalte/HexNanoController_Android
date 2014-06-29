@@ -33,12 +33,16 @@ public class ReceivedDataDecoder {
     new Thread(consumer).start();
   }
 
-  public void add(String data) {
-    byte[] bytes = data.getBytes();
-    Log.v(TAG, "Adding data to queue: " + Arrays.toString(bytes));
-    for (byte b : bytes) {
+  public void add(byte[] data) {
+    Log.v(TAG, "Adding data to queue: " + Arrays.toString(data));
+    for (byte b : data) {
       queue.offer(b);
     }
+  }
+
+  public void add(String data) {
+    byte[] bytes = data.getBytes();
+    add(bytes);
   }
 
   protected void dataDecoded(CommandData commandData) {
@@ -223,13 +227,13 @@ public class ReceivedDataDecoder {
           double ay = read16(Arrays.copyOfRange(payload, 2, 4));
           double az = read16(Arrays.copyOfRange(payload, 4, 6));
           // gyro
-          double gx = read16(Arrays.copyOfRange(payload, 6, 8)) / 8;
-          double gy = read16(Arrays.copyOfRange(payload, 8, 10)) / 8;
-          double gz = read16(Arrays.copyOfRange(payload, 10, 12)) / 8;
+          double gx = (double) read16(Arrays.copyOfRange(payload, 6, 8)) / 8;
+          double gy = (double) read16(Arrays.copyOfRange(payload, 8, 10)) / 8;
+          double gz = (double) read16(Arrays.copyOfRange(payload, 10, 12)) / 8;
           // mag
-          double magx = read16(Arrays.copyOfRange(payload, 12, 14)) / 3;
-          double magy = read16(Arrays.copyOfRange(payload, 14, 16)) / 3;
-          double magz = read16(Arrays.copyOfRange(payload, 16, 18)) / 3;
+          double magx = (double) read16(Arrays.copyOfRange(payload, 12, 14)) / 3;
+          double magy = (double) read16(Arrays.copyOfRange(payload, 14, 16)) / 3;
+          double magz = (double) read16(Arrays.copyOfRange(payload, 16, 18)) / 3;
           commandData.setPayload(new double[]{ax, ay, az, gx, gy, gz, magx, magy, magz});
           Log.i(TAG, "RAW_IMU: ax=" + String.format("%.2f", ax) + ", ay=" + String.format("%.2f", ay)
             + ", az=" + String.format("%.2f", az) + ", gx=" + String.format("%.2f", gx)
@@ -291,9 +295,9 @@ public class ReceivedDataDecoder {
       case MSP_ATTITUDE:
         if ((payload != null) && (payload.length == 8)) {
           // angx
-          double angx = read16(Arrays.copyOfRange(payload, 0, 2)) / 10;
+          double angx = (double) read16(Arrays.copyOfRange(payload, 0, 2)) / 10;
           // angy
-          double angy = read16(Arrays.copyOfRange(payload, 2, 4)) / 10;
+          double angy = (double) read16(Arrays.copyOfRange(payload, 2, 4)) / 10;
           // heading
           double heading = read16(Arrays.copyOfRange(payload, 4, 6));
           // headFreeModeHold
@@ -308,7 +312,7 @@ public class ReceivedDataDecoder {
       case MSP_ALTITUDE:
         if ((payload != null) && (payload.length == 6)) {
           // altitude
-          double altitude = read32(Arrays.copyOfRange(payload, 0, 4)) / 100;
+          double altitude = (double) read32(Arrays.copyOfRange(payload, 0, 4)) / 100;
           // vario
           double vario = read16(Arrays.copyOfRange(payload, 4, 6));
           commandData.setPayload(new double[]{altitude, vario});

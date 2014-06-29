@@ -85,8 +85,7 @@ public class BleConnectionManager {
         }
       } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) { //�յ����
         Log.e(TAG, "RECV DATA");
-        String data = intent.getStringExtra(BluetoothLeService.EXTRA_DATA);
-
+        byte[] data = intent.getByteArrayExtra(BluetoothLeService.EXTRA_DATA);
 
         if (delegate != null) {
           delegate.didReceiveData(BleConnectionManager.this, data);

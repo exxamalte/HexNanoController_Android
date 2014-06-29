@@ -35,6 +35,7 @@ import com.hexairbot.hexmini.util.telemetry.ReceivedDataDecoder;
 import com.hexairbot.hexmini.util.telemetry.TelemetryDataLogger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -881,9 +882,9 @@ public class SettingsViewController extends ViewController
   }
 
   @Override
-  public void didReceiveData(BleConnectionManager manager, String data) {
+  public void didReceiveData(BleConnectionManager manager, byte[] data) {
     if (data != null) {
-      Log.d(TAG, "Received data: " + data);
+      Log.d(TAG, "Received data: " + Arrays.toString(data));
       // sending data off to decoder
       receivedDataDecoder.add(data);
     } else {
