@@ -35,13 +35,13 @@ public class BleConnectionManager {
         Log.e(TAG, "Unable to initialize Bluetooth");
         mBluetoothLeService = null;
       } else {
-        Log.e(TAG, "mBluetoothLeService is okay");
+        Log.i(TAG, "mBluetoothLeService is okay");
       }
     }
 
     @Override
     public void onServiceDisconnected(ComponentName componentName) {
-      Log.e(TAG, "onServiceDisconnected");
+      Log.d(TAG, "onServiceDisconnected");
       // mBluetoothLeService = null;
     }
   };
@@ -58,24 +58,23 @@ public class BleConnectionManager {
 
       final String action = intent.getAction();
       if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {  //���ӳɹ�
-        Log.e(TAG, "Only gatt, just wait");
+        Log.i(TAG, "Only gatt, just wait");
       } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) { //�Ͽ�����
-        Log.e(TAG, "ACTION_GATT_DISCONNECTED");
+        Log.i(TAG, "ACTION_GATT_DISCONNECTED");
 
-        Log.e(TAG, "thread name:" + Thread.currentThread().getName());
+        Log.d(TAG, "thread name:" + Thread.currentThread().getName());
 
         isConnected = false;
 
         if (delegate != null) {
           delegate.didDisconnect(BleConnectionManager.this);
         }
-      } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) //���Կ�ʼ�ɻ���
-      {
+      } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) { //���Կ�ʼ�ɻ���
         //Toast.makeText(BleConnectionManager.this.context, "���ӳɹ������ڿ�����ͨ�ţ�", Toast.LENGTH_SHORT).show();
         isConnected = true;
 
             	/*
-        		if(currentConnection != connection) {
+            if(currentConnection != connection) {
         			Log.d(TAG, "didConnect:old connection, just ignore");
         		}
         		*/
@@ -84,7 +83,7 @@ public class BleConnectionManager {
           delegate.didConnect(BleConnectionManager.this);
         }
       } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) { //�յ����
-        Log.e(TAG, "RECV DATA");
+        Log.i(TAG, "RECV DATA");
         byte[] data = intent.getByteArrayExtra(BluetoothLeService.EXTRA_DATA);
 
         if (delegate != null) {
@@ -147,7 +146,7 @@ public class BleConnectionManager {
   }
 
   public void close() {
-    Log.e(TAG, "release resource");
+    Log.d(TAG, "Attempting release resources");
 
     if (mGattUpdateReceiver != null) {
       this.context.unregisterReceiver(mGattUpdateReceiver);
@@ -164,7 +163,7 @@ public class BleConnectionManager {
       mBluetoothLeService = null;
     }
 
-    Log.d(TAG, "releaseSource");
+    Log.d(TAG, "Finished release resources");
   }
 
   public void sendData(String data) {
