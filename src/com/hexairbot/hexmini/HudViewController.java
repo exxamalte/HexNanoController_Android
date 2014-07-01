@@ -362,12 +362,12 @@ public class HudViewController extends ViewController
     rollPitchListener = new JoystickListener() {
       public void onChanged(JoystickBase joy, float x, float y) {
         if (HexMiniApplication.sharedApplication().getAppStage() == AppStage.SETTINGS) {
-          Log.e(TAG, "AppStage.SETTINGS ignore rollPitchListener onChanged");
+          Log.d(TAG, "AppStage.SETTINGS ignore rollPitchListener onChanged");
           return;
         }
 
         if (!isAccMode && rollAndPitchJoystickPressed) {
-          Log.e(TAG, "rollPitchListener onChanged x:" + x + "y:" + y);
+          Log.d(TAG, "rollPitchListener onChanged x:" + x + "y:" + y);
 
           if (settings.isBeginnerMode()) {
             aileronChannel.setValue(x * BEGINNER_AILERON_CHANNEL_RATIO);
@@ -397,11 +397,11 @@ public class HudViewController extends ViewController
     rudderThrottleListener = new JoystickListener() {
       public void onChanged(JoystickBase joy, float x, float y) {
         if (HexMiniApplication.sharedApplication().getAppStage() == AppStage.SETTINGS) {
-          Log.e(TAG, "AppStage.SETTINGS ignore rudderThrottleListener onChanged");
+          Log.d(TAG, "AppStage.SETTINGS ignore rudderThrottleListener onChanged");
           return;
         }
 
-        Log.e(TAG, "rudderThrottleListener onChanged x:" + x + "y:" + y);
+        Log.d(TAG, "rudderThrottleListener onChanged x:" + x + "y:" + y);
 
         if (settings.yawEnable()) {
           rudderChannel.setValue(x);
@@ -431,11 +431,8 @@ public class HudViewController extends ViewController
 
       @Override
       public void onReleased(JoystickBase joy) {
+        Log.d(TAG, "rudderThrottleListener onReleased: set rudder to 0, keep throttle as before");
         rudderChannel.setValue(0.0f);
-
-        Log.e(TAG, "rudderThrottleListener onReleased " + joy.getYValue());
-
-        throttleChannel.setValue(joy.getYValue());
         if (settings.isHoverOnThrottleReleaseMode()) {
           // put the copter into hover mode
           aux2Channel.setValue(1);
@@ -758,7 +755,7 @@ public class HudViewController extends ViewController
 
     setJoysticks();
 
-    Log.e(TAG, "THRO:" + throttleChannel.getValue());
+    Log.d(TAG, "THRO:" + throttleChannel.getValue());
 
     getRudderAndThrottleJoystick().setYValue(throttleChannel.getValue());
   }
