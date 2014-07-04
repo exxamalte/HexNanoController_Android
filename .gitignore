@@ -30,3 +30,6 @@ proguard/
 # Maven
 log/
 target/
+
+# Mac OS X
+.DS_Store
