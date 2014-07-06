@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hexairbot.hexmini"
-    android:versionCode="5"
-    android:versionName="1.0.6.1" >
+    android:versionCode="6"
+    android:versionName="1.0.6.2" >
 
     <uses-sdk
         android:minSdkVersion="18"
-        android:targetSdkVersion="18" />
+        android:targetSdkVersion="19" />
     <uses-feature android:required="true" android:glEsVersion="0x00020000"/>
 
-        <!-- Declare this required feature if you want to make the app available to BLE-capable
+    <!-- Declare this required feature if you want to make the app available to BLE-capable
     devices only.  If you want to make your app available to devices that don't support BLE,
     you should omit this in the manifest.  Instead, determine BLE capability by using
     PackageManager.hasSystemFeature(FEATURE_BLUETOOTH_LE) -->
@@ -35,9 +35,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name="com.hexairbot.hexmini.ble.BluetoothLeService" android:enabled="true"/>
-        <service android:name=".services.IpcControlService"></service>
-        <activity android:name=".HelpActivity" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity> 
+        <service android:name=".ble.BluetoothLeService" android:enabled="true"/>
+        <service android:name=".services.IpcControlService"/>
+        <activity android:name=".HelpActivity" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
     </application>
 
 </manifest>
