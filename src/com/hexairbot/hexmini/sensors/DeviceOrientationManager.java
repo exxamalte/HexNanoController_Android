@@ -83,7 +83,6 @@ public class DeviceOrientationManager
     checkSensors(sensorManager);
   }
 
-
   public void resume() {
     resume(true, true);
   }
@@ -91,7 +90,6 @@ public class DeviceOrientationManager
   public void onCreate() {
     sensorManager.onCreate();
   }
-
 
   public void resume(boolean useMagneto, boolean useGyro) {
     this.sensorManager.onResume();
@@ -110,7 +108,6 @@ public class DeviceOrientationManager
 
     Log.d(TAG, "Device Orientation Manager has been resumed");
   }
-
 
   public void pause() {
     this.sensorManager.onPause();
@@ -131,30 +128,25 @@ public class DeviceOrientationManager
 
   public void destroy() {
     this.sensorManager.onDestroy();
-
   }
 
   public boolean isMagnetoAvailable() {
     return magnetoAvailable;
   }
 
-
   public boolean isGyroAvailable() {
     return gyroAvailable;
   }
 
-
   public boolean isAcceleroAvailable() {
     return acceleroAvailable;
   }
-
 
   private void checkSensors(SensorManagerWrapper sensorManager) {
     this.acceleroAvailable = sensorManager.isAcceleroAvailable();
     this.gyroAvailable = sensorManager.isGyroAvailable();
     this.magnetoAvailable = sensorManager.isMagnetoAvailable();
   }
-
 
   private void initSensorListeners() {
     acceleroEventListener = new SensorEventListener() {

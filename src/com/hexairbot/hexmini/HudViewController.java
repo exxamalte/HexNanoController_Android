@@ -43,7 +43,7 @@ import java.util.concurrent.TimeUnit;
 public class HudViewController extends ViewController
   implements OnTouchListener, OnGestureListener, SettingsViewControllerDelegate, DeviceOrientationChangeDelegate {
 
-  private static final String TAG = "HudViewController";
+  private static final String TAG = HudViewController.class.getSimpleName();
 
   private static final int JOY_ID_LEFT = 1;
   private static final int JOY_ID_RIGHT = 2;

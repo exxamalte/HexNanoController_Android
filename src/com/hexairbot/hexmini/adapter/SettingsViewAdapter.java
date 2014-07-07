@@ -15,7 +15,6 @@ public class SettingsViewAdapter extends PagerAdapter {
     this.views = views;
   }
 
-
   @Override
   public Object instantiateItem(ViewGroup container, int position) {
     View view = views.get(position);
@@ -26,7 +25,7 @@ public class SettingsViewAdapter extends PagerAdapter {
 
   @Override
   public void destroyItem(ViewGroup container, int position, Object object) {
-    ((ViewPager) container).removeView((View) object);
+    container.removeView((View) object);
   }
 
   @Override

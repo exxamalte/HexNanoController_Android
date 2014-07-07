@@ -16,7 +16,7 @@ import com.hexairbot.hexmini.util.DebugHandler;
 
 public class IpcControlService extends Service {
 
-  public final static String TAG = "IpcControllService";
+  public final static String TAG = IpcControlService.class.getSimpleName();
 
   public final static String COMMAD_PARM = "command";
   public final static int COMMAND_CONNECT = 1000;

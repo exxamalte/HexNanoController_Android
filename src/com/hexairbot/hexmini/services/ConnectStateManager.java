@@ -17,7 +17,7 @@ public class ConnectStateManager {
     System.loadLibrary("vmcipc");
   }
 
-  private final static String TAG = "ConnectStateManager";
+  private final static String TAG = ConnectStateManager.class.getSimpleName();
 
   public final static int CONNECTED = 1;
   public final static int DISCONNECTED = 0;
@@ -36,7 +36,6 @@ public class ConnectStateManager {
   private final ArrayList<OnIpcConnectChangedListener> connectChangedListeners = new ArrayList<OnIpcConnectChangedListener>();
   private LocalBroadcastManager mLocalBroadcastManager;
   /**
-   * �??使�????模�?�?????�?���??管�??��???
    */
   private static ConnectStateManager instance = null;
 

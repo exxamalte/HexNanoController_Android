@@ -621,7 +621,7 @@ public abstract class JoystickBase extends Sprite {
 
     float yOffset = yOperableRadiusWidth * refinedValue;
 
-    Log.e(TAG, "y offset" + yOffset);
+    Log.d(TAG, "y offset: " + yOffset);
 
     //if (yStickIsBounced == false) {
     //moveToBase(activationRect);

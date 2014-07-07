@@ -12,7 +12,7 @@ import com.hexairbot.hexmini.util.DebugHandler;
 
 public class IpcProxy {
 
-  private final static String TAG = "IpcProxy";
+  private final static String TAG = IpcProxy.class.getSimpleName();
 
   private Application appContext = null;
   private String[] navData = null;

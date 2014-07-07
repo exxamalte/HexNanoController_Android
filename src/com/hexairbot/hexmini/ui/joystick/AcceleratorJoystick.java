@@ -13,32 +13,22 @@ import com.hexairbot.hexmini.ui.Sprite.Align;
 
 import android.content.Context;
 
+public class AcceleratorJoystick extends JoystickBase {
+  public AcceleratorJoystick(Context context, Align align, boolean isRollPitchJoystick, boolean yStickIsBounced) {
+    super(context, align, isRollPitchJoystick, yStickIsBounced);
+  }
 
-public class AcceleratorJoystick 
-	extends JoystickBase
-{
-	public AcceleratorJoystick(Context context, Align align, boolean isRollPitchJoystick, boolean yStickIsBounced) 
-	{
-		super(context, align, isRollPitchJoystick, yStickIsBounced);
-	}
-	
-	
-	@Override
-	protected int getBackgroundDrawableId() 
-	{
-		return R.drawable.joystick_bg2;
-	}
+  @Override
+  protected int getBackgroundDrawableId() {
+    return R.drawable.joystick_bg2;
+  }
 
+  @Override
+  protected int getTumbDrawableId() {
+    return R.drawable.joystick_rudder_throttle;
+  }
 
-	@Override
-	protected int getTumbDrawableId() 
-	{
-		return R.drawable.joystick_rudder_throttle;
-	}
-
-	
-	@Override
-	protected void onActionMove(float x, float y) 
-	{
-	}
+  @Override
+  protected void onActionMove(float x, float y) {
+  }
 }

@@ -198,7 +198,7 @@ public class BleConnectionManager {
     this.context = context;
   }
 
-  private IntentFilter makeGattUpdateIntentFilter() {                        //ע����յ��¼�
+  private IntentFilter makeGattUpdateIntentFilter() {
     final IntentFilter intentFilter = new IntentFilter();
     intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
     intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);

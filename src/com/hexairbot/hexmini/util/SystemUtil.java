@@ -11,23 +11,21 @@ import android.util.Log;
 
 public class SystemUtil {
 
-    private final static String TAG = "SystemUtil";
+  private final static String TAG = SystemUtil.class.getSimpleName();
 
-    public static String getCurrentFormatTime() {
-	SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-	String nowTime = format.format(new Date());
-	return nowTime;
-    }
+  public static String getCurrentFormatTime() {
+    SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+    return format.format(new Date());
+  }
 
-    public static boolean isDebugModel(Context context) {
-	PackageManager mgr = context.getPackageManager();
-	try {
-	    ApplicationInfo info = mgr.getApplicationInfo(
-		    context.getPackageName(), 0);
-	    return (info.flags & ApplicationInfo.FLAG_DEBUGGABLE) == ApplicationInfo.FLAG_DEBUGGABLE;
-	} catch (NameNotFoundException e) {
-	    Log.e(TAG, e.getMessage(), e);
-	}
-	return false;
+  public static boolean isDebugModel(Context context) {
+    PackageManager mgr = context.getPackageManager();
+    try {
+      ApplicationInfo info = mgr.getApplicationInfo(context.getPackageName(), 0);
+      return (info.flags & ApplicationInfo.FLAG_DEBUGGABLE) == ApplicationInfo.FLAG_DEBUGGABLE;
+    } catch (NameNotFoundException e) {
+      Log.e(TAG, e.getMessage(), e);
     }
+    return false;
+  }
 }

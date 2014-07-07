@@ -67,8 +67,8 @@ public class HelpActivity extends Activity implements OnPageChangeListener {
   private List<View> initPages(LayoutInflater inflater, int[] pageIds) {
     ArrayList<View> pageList = new ArrayList<View>(pageIds.length);
 
-    for (int i = 0; i < pageIds.length; ++i) {
-      View view = inflater.inflate(pageIds[i], null);
+    for (int pageId : pageIds) {
+      View view = inflater.inflate(pageId, null);
       pageList.add(view);
     }
 
@@ -77,14 +77,10 @@ public class HelpActivity extends Activity implements OnPageChangeListener {
 
   @Override
   public void onPageScrollStateChanged(int arg0) {
-    // TODO Auto-generated method stub
-
   }
 
   @Override
   public void onPageScrolled(int arg0, float arg1, int arg2) {
-    // TODO Auto-generated method stub
-
   }
 
   @Override
@@ -111,7 +107,7 @@ class HelpViewAdapter extends PagerAdapter {
 
   @Override
   public void destroyItem(ViewGroup container, int position, Object object) {
-    ((ViewPager) container).removeView((View) object);
+    container.removeView((View) object);
   }
 
   @Override

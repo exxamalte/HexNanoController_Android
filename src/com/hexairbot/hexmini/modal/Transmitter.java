@@ -105,7 +105,6 @@ public class Transmitter {
 
   int check = 0;
 
-  //����˸�ͨ������ݣ�ͨ�������5���ֽ�����ʾ
   private void updateDataPackage() {
     byte checkSum = 0;
 
@@ -116,7 +115,7 @@ public class Transmitter {
 
     checkSum ^= (dataPackage[dataSizeIdx] & 0xFF);
     checkSum ^= (dataPackage[dataSizeIdx + 1] & 0xFF);
-	    
+
 	    /*
 	    if (check == 0) {
 	    	channelList[0] = -0.5f; 
@@ -127,11 +126,8 @@ public class Transmitter {
 	    	check = 0;
 	    }*/
 
-
     for (int channelIdx = 0; channelIdx < CHANNEL_COUNT - 4; channelIdx++) {
       float scale = channelList[channelIdx];
-
-
       if (scale > 1) {
         scale = 1;
       } else if (scale < -1) {
