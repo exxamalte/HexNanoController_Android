@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Flexbot</string>
+    <string name="app_name">Flexbot EE</string>
     <string name="settings_title_connection">CONNECT TO FLEXBOT</string>
     <string name="settings_title_personal">PERSONAL SETTINGS</string>
     <string name="settings_title_angel_trim">FLIGHT ANGLE TRIM</string>
