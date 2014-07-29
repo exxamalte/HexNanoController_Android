@@ -60,8 +60,7 @@ public class Input extends InputStream {
 				System.arraycopy(remainData, 0, b, off + remain, rd);
 				return remain + rd;
 			} else {
-				int rd = in.read(b, off, len);
-				return rd;
+        return in.read(b, off, len);
 			}
 		}
 	}
@@ -88,7 +87,7 @@ public class Input extends InputStream {
 		if ((ch1 | ch2) < 0) {
 			throw new EOFException();
 		}
-		return (ch1 << 8) + (ch2 << 0);
+		return (ch1 << 8) + (ch2);
 	}
 
 	public short readShort() throws IOException {
@@ -97,7 +96,7 @@ public class Input extends InputStream {
 		if ((ch1 | ch2) < 0) {
 			throw new EOFException();
 		}
-		return (short) ((ch1 << 8) + (ch2 << 0));
+		return (short) ((ch1 << 8) + (ch2));
 	}
 
 	public char readChar() throws IOException {
@@ -106,7 +105,7 @@ public class Input extends InputStream {
 		if ((ch1 | ch2) < 0) {
 			throw new EOFException();
 		}
-		return (char) ((ch1 << 8) + (ch2 << 0));
+		return (char) ((ch1 << 8) + (ch2));
 	}
 
 	public int readInt() throws IOException {
@@ -117,7 +116,7 @@ public class Input extends InputStream {
 		if ((ch1 | ch2 | ch3 | ch4) < 0) {
 			throw new EOFException();
 		}
-		return ((ch1 << 24) + (ch2 << 16) + (ch3 << 8) + (ch4 << 0));
+		return ((ch1 << 24) + (ch2 << 16) + (ch3 << 8) + (ch4));
 	}
 
 	public long readLong() throws IOException {
@@ -185,7 +184,7 @@ public class Input extends InputStream {
 					throw new UTFDataFormatException();
 				}
 				str[strlen++] = (char) (((c & 0x0F) << 12)
-						| ((char2 & 0x3F) << 6) | ((char3 & 0x3F) << 0));
+						| ((char2 & 0x3F) << 6) | ((char3 & 0x3F)));
 				break;
 			default:
 				/* 10xx xxxx, 1111 xxxx */

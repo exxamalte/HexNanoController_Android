@@ -881,7 +881,7 @@ public class HudViewController extends ViewController
     @Override
     public void onReceive(Context arg0, Intent intent) {
       String action = intent.getAction();
-      if (action.equals(Intent.ACTION_BATTERY_CHANGED)) {
+      if (Intent.ACTION_BATTERY_CHANGED.equals(action)) {
         final int level = intent.getIntExtra(
           BatteryManager.EXTRA_LEVEL, 0);
         final int scale = intent.getIntExtra(

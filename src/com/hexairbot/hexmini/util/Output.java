@@ -129,7 +129,7 @@ public class Output extends OutputStream {
 
 		byte[] bytearr = new byte[utflen + 2];
 		bytearr[count++] = (byte) ((utflen >>> 8) & 0xFF);
-		bytearr[count++] = (byte) ((utflen >>> 0) & 0xFF);
+		bytearr[count++] = (byte) ((utflen) & 0xFF);
 		for (int i = 0; i < strlen; i++) {
 			c = charr[i];
 			if ((c >= 0x0001) && (c <= 0x007F)) {
@@ -137,10 +137,10 @@ public class Output extends OutputStream {
 			} else if (c > 0x07FF) {
 				bytearr[count++] = (byte) (0xE0 | ((c >> 12) & 0x0F));
 				bytearr[count++] = (byte) (0x80 | ((c >> 6) & 0x3F));
-				bytearr[count++] = (byte) (0x80 | ((c >> 0) & 0x3F));
+				bytearr[count++] = (byte) (0x80 | ((c) & 0x3F));
 			} else {
 				bytearr[count++] = (byte) (0xC0 | ((c >> 6) & 0x1F));
-				bytearr[count++] = (byte) (0x80 | ((c >> 0) & 0x3F));
+				bytearr[count++] = (byte) (0x80 | ((c) & 0x3F));
 			}
 		}
 		write(bytearr);
