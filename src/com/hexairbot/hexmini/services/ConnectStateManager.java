@@ -1,15 +1,14 @@
 package com.hexairbot.hexmini.services;
 
-import java.util.ArrayList;
-
 import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
-
 import com.hexairbot.hexmini.util.DebugHandler;
+
+import java.util.ArrayList;
 
 public class ConnectStateManager {
 

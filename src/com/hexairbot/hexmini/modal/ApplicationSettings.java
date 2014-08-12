@@ -1,17 +1,17 @@
 package com.hexairbot.hexmini.modal;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.util.Log;
 import com.dd.plist.NSArray;
 import com.dd.plist.NSDictionary;
 import com.dd.plist.NSNumber;
 import com.dd.plist.PropertyListParser;
 import com.hexairbot.hexmini.HexMiniApplication;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ApplicationSettings {
 

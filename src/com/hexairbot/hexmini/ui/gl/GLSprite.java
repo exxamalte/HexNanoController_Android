@@ -6,28 +6,18 @@
  */
 package com.hexairbot.hexmini.ui.gl;
 
-import java.nio.Buffer;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
-import java.nio.ShortBuffer;
-
-import javax.microedition.khronos.opengles.GL10;
-
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Rect;
+import android.graphics.*;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
 import android.opengl.Matrix;
 import android.os.Build;
 import android.util.Log;
-
 import com.hexairbot.hexmini.util.TextureUtils;
+
+import javax.microedition.khronos.opengles.GL10;
+import java.nio.*;
 
 public class GLSprite {
   private static final int VERTEX_BUFFER = 0;

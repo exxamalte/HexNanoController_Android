@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-
 import com.hexairbot.hexmini.HexMiniApplication.AppStage;
 import com.hexairbot.hexmini.modal.ApplicationSettings;
 import com.hexairbot.hexmini.modal.OSDCommon;

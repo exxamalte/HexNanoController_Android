@@ -165,7 +165,7 @@ public class HudViewController extends ViewController
     Resources res = context.getResources();
 
     Image topBarBg = new Image(res, R.drawable.bar_top, Align.TOP_CENTER);
-    topBarBg.setSizeParams(SizeParams.FILL_SCREEN, SizeParams.NONE);  //Widthˮƽ������ȫ����height���ֲ���
+    topBarBg.setSizeParams(SizeParams.FILL_SCREEN, SizeParams.NONE);
     topBarBg.setAlphaEnabled(true);
 
     bottomBarBg = new Image(res, R.drawable.bar_bottom, Align.BOTTOM_CENTER);
@@ -175,7 +175,7 @@ public class HudViewController extends ViewController
     Image middleBg = new Image(res, R.drawable.bg_tile, Align.CENTER);
     middleBg.setAlpha(1f);
     middleBg.setVisible(false);
-    middleBg.setSizeParams(SizeParams.REPEATED, SizeParams.REPEATED);  //Widthˮƽ������ȫ����height���ֲ���
+    middleBg.setSizeParams(SizeParams.REPEATED, SizeParams.REPEATED);
     middleBg.setAlphaEnabled(true);
 
     Image bottomLeftSkrew = new Image(res, R.drawable.screw, Align.BOTTOM_LEFT);
@@ -367,7 +367,7 @@ public class HudViewController extends ViewController
         }
 
         if (!isAccMode && rollAndPitchJoystickPressed) {
-          Log.d(TAG, "rollPitchListener onChanged x:" + x + "y:" + y);
+          Log.v(TAG, "rollPitchListener onChanged x:" + x + "y:" + y);
 
           if (settings.isBeginnerMode()) {
             aileronChannel.setValue(x * BEGINNER_AILERON_CHANNEL_RATIO);
@@ -401,7 +401,7 @@ public class HudViewController extends ViewController
           return;
         }
 
-        Log.d(TAG, "rudderThrottleListener onChanged x:" + x + "y:" + y);
+        Log.v(TAG, "rudderThrottleListener onChanged x:" + x + "y:" + y);
 
         if (settings.yawEnable()) {
           rudderChannel.setValue(x);
@@ -431,7 +431,7 @@ public class HudViewController extends ViewController
 
       @Override
       public void onReleased(JoystickBase joy) {
-        Log.d(TAG, "rudderThrottleListener onReleased: set rudder to 0, keep throttle as before");
+        Log.v(TAG, "rudderThrottleListener onReleased: set rudder to 0, keep throttle as before");
         rudderChannel.setValue(0.0f);
         if (settings.isHoverOnThrottleReleaseMode()) {
           // put the copter into hover mode
@@ -812,13 +812,13 @@ public class HudViewController extends ViewController
       aileronChannel.setValue(0.0f);
       elevatorChannel.setValue(0.0f);
 
-      Log.d(TAG, "before pressed ROLL:" + rollBase + ",PITCH:" + pitchBase);
+      Log.v(TAG, "before pressed ROLL:" + rollBase + ",PITCH:" + pitchBase);
     } else {
       float x = (orientation[PITCH] - pitchBase);
       float y = (orientation[ROLL] - rollBase);
 
       if (isAccMode) {
-        Log.d(TAG, "ROLL:" + (-x) + ",PITCH:" + y);
+        Log.v(TAG, "ROLL:" + (-x) + ",PITCH:" + y);
 
         if (Math.abs(x) > ACCELERO_THRESHOLD || Math.abs(y) > ACCELERO_THRESHOLD) {
           if (settings.isBeginnerMode()) {

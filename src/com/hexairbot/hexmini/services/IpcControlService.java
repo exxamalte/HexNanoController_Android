@@ -1,9 +1,5 @@
 package com.hexairbot.hexmini.services;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringTokenizer;
-
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
@@ -11,8 +7,11 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.support.v4.content.LocalBroadcastManager;
-
 import com.hexairbot.hexmini.util.DebugHandler;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 public class IpcControlService extends Service {
 

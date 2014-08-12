@@ -108,7 +108,7 @@ public class BluetoothLeService extends Service {
           Log.i(TAG, "Connected to GATT server.");
           // Attempts to discover services after successful connection.
           Log.i(TAG, "Attempting to start service discovery: " + mBluetoothGatt.discoverServices());
-        } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {  //������ģ��ϵ磬Ҳ�ᷢ�ʹ˹㲥
+        } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
           intentAction = ACTION_GATT_DISCONNECTED;
           //mBluetoothGatt.close();
           //mBluetoothGatt = null;
@@ -134,23 +134,27 @@ public class BluetoothLeService extends Service {
 
     @Override
     public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+      Log.v(TAG, "onCharacteristicRead");
       if (status == BluetoothGatt.GATT_SUCCESS) {
         broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
+        Log.d(TAG, "onCharacteristicRead SUCCESS");
+      } else {
+        Log.e(TAG, "onCharacteristicRead FAILED, status="+status);
       }
     }
 
     @Override
     public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+      Log.v(TAG, "onCharacteristicChanged");
       broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
-      //Log.e(TAG, "OnCharacteristicWrite");
     }
 
     @Override
     public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
       if (status == BluetoothGatt.GATT_SUCCESS) {
-        Log.i(TAG, "OnCharacteristicWrite SUCCESS");
+        Log.d(TAG, "OnCharacteristicWrite SUCCESS");
       } else {
-        Log.e(TAG, "OnCharacteristicWrite FAILED");
+        Log.e(TAG, "OnCharacteristicWrite FAILED, status="+status);
       }
     }
 

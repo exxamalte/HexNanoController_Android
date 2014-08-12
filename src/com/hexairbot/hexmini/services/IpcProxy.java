@@ -1,14 +1,13 @@
 package com.hexairbot.hexmini.services;
 
-import java.util.ArrayList;
-
 import android.app.Application;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
-
 import com.hexairbot.hexmini.util.DebugHandler;
+
+import java.util.ArrayList;
 
 public class IpcProxy {
 

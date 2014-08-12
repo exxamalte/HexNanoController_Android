@@ -13,8 +13,6 @@ import com.hexairbot.hexmini.HexMiniApplication.AppStage;
 
 //import android.support.v4.content.LocalBroadcastManager;
 
-import com.hexairbot.hexmini.HexMiniApplication.AppStage;
-
 
 @SuppressLint("ValidFragment")
 public class SettingsDialog extends DialogFragment {

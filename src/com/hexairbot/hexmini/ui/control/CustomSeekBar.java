@@ -11,9 +11,7 @@ import android.view.Gravity;
 import android.widget.SeekBar;
 import android.widget.TableLayout.LayoutParams;
 import android.widget.TextView;
-
 import com.hexairbot.hexmini.R;
-
 
 public class CustomSeekBar extends SeekBar {
   private TextView lowerBoundView;
