@@ -642,15 +642,22 @@ public class HudViewController extends ViewController
 
     //txtBatteryStatus.setText(percent + "%");
 
-    if (imgNum < 0)
+    if (imgNum < 0) {
       imgNum = 0;
+    }
 
-    if (imgNum > 4)
+    if (imgNum > 4) {
       imgNum = 4;
+    }
 
     if (batteryIndicator != null) {
       batteryIndicator.setValue(imgNum);
     }
+  }
+
+  @Override
+  public void rssiValueDidChange(int rssi) {
+    // TODO: display value
   }
 
   public void setSettingsButtonEnabled(boolean enabled) {

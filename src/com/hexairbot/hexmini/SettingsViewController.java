@@ -114,6 +114,20 @@ public class SettingsViewController extends ViewController
         });
       }
     };
+
+  private BluetoothAdapter.LeScanCallback rssiLeScanCallback = new BluetoothAdapter.LeScanCallback() {
+
+    @Override
+    public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
+      Log.d(TAG, "Scan: " + device.getName() + " with RSSI value of " + rssi);
+      BluetoothDevice currentDevice = Transmitter.sharedTransmitter().getBleConnectionManager().getCurrentDevice();
+      if (device.equals(currentDevice)) {
+        // found the right one
+        delegate.rssiValueDidChange(rssi);
+      }
+    }
+  };
+
   private boolean bleAvailabed;
 
   private ReceivedDataDecoder receivedDataDecoder = new ReceivedDataDecoder();
@@ -852,6 +866,8 @@ public class SettingsViewController extends ViewController
     if (delegate != null) {
       delegate.didConnect();
     }
+    // now start the RSSI measuring thread
+    mBluetoothAdapter.startLeScan(rssiLeScanCallback);
   }
 
   @Override
@@ -875,6 +891,9 @@ public class SettingsViewController extends ViewController
         scanBtn.setEnabled(true);
       }
     }, 3000);
+
+    // stop the RSSI measuring thread
+    mBluetoothAdapter.stopLeScan(rssiLeScanCallback);
 
     if (delegate != null) {
       delegate.didDisconnect();
