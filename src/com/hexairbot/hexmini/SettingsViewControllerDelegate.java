@@ -18,4 +18,5 @@ public interface SettingsViewControllerDelegate {
   public void didConnect();
   public void didDisconnect();
   public void didFailToConnect();
+  public void rssiValueDidChange(int rssi);
 }
