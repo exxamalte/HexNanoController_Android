@@ -26,7 +26,8 @@ import android.opengl.GLUtils;
 import android.opengl.Matrix;
 import android.os.Build;
 import android.util.Log;
-import com.hexairbot.hexmini.util.TextureUtils;;
+
+import com.hexairbot.hexmini.util.TextureUtils;
 
 public class GLSprite {
   private static final int VERTEX_BUFFER = 0;

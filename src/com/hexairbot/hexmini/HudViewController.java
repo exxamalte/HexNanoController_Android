@@ -897,7 +897,7 @@ public class HudViewController extends ViewController
       }
     }
   };
-  
+
   @Override
   public void yawEnableValueDidChange(boolean isYawEnable) {
   }
