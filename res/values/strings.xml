@@ -56,4 +56,7 @@
 
 	<string name="btn_close">CLOSE</string>
 	<string name="unknown">Unknown</string>
+
+  <string name="rssi_empty_value">RSSI: ---</string>
+  <string name="rssi_number_value">RSSI: %d</string>
 </resources>

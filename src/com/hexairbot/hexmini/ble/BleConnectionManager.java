@@ -11,10 +11,13 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * @author koupoo
  */
-public class BleConnectionManager {
+public class BleConnectionManager implements BluetoothLeServiceDelegate {
   private static final String TAG = BleConnectionManager.class.getSimpleName();
 
   private BluetoothDevice currentDevice;
@@ -31,6 +34,7 @@ public class BleConnectionManager {
     @Override
     public void onServiceConnected(ComponentName componentName, IBinder service) {
       mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
+      mBluetoothLeService.setDelegate(BleConnectionManager.this);
       if (!mBluetoothLeService.initialize()) {
         Log.e(TAG, "Unable to initialize Bluetooth");
         mBluetoothLeService = null;
@@ -82,7 +86,7 @@ public class BleConnectionManager {
         if (delegate != null) {
           delegate.didConnect(BleConnectionManager.this);
         }
-      } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) { //�յ����
+      } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
         Log.i(TAG, "RECV DATA");
         byte[] data = intent.getByteArrayExtra(BluetoothLeService.EXTRA_DATA);
 
@@ -125,11 +129,13 @@ public class BleConnectionManager {
       closeCurrentGatt();
 
       currentDevice = device;
+      Log.d(TAG, "New current device: " + currentDevice);
 
       if (mBluetoothLeService != null) {
         mBluetoothLeService.connect(currentDevice.getAddress());
       }
     }
+    initRssiScan();
   }
 
   public void disconnect() {
@@ -206,5 +212,25 @@ public class BleConnectionManager {
     intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
     intentFilter.addAction(BluetoothDevice.ACTION_UUID);
     return intentFilter;
+  }
+
+  private void initRssiScan() {
+    Timer timer = new Timer();
+    // request an RSSI value every 500ms - the result is handled vai callbacks
+    timer.schedule(new TimerTask() {
+      @Override
+      public void run() {
+        if (mBluetoothLeService != null && isConnected()) {
+          mBluetoothLeService.readRemoteRssi();
+        }
+      }
+    }, 0, 500);
+  }
+
+  @Override
+  public void onReadRemoteRssi(int rssi, int status) {
+    if (delegate != null) {
+      delegate.onReadRemoteRssi(rssi, status);
+    }
   }
 }

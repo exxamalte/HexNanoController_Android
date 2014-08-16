@@ -1,8 +1,9 @@
 package com.hexairbot.hexmini.ble;
 
 public interface BleConnectionManagerDelegate {
-	public void didConnect(BleConnectionManager manager);
-	public void didDisconnect(BleConnectionManager manager);
-	public void didFailToConnect(BleConnectionManager manager);
-	public void didReceiveData(BleConnectionManager manager, byte[] data);
+  void didConnect(BleConnectionManager manager);
+  void didDisconnect(BleConnectionManager manager);
+  void didFailToConnect(BleConnectionManager manager);
+  void didReceiveData(BleConnectionManager manager, byte[] data);
+  void onReadRemoteRssi(int rssi, int status);
 }

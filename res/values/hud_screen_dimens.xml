@@ -23,4 +23,5 @@
   <dimen name="hud_stopwatch_margin_right">180dp</dimen>
   <dimen name="hud_btn_stopwatch_reset_margin_top">5dp</dimen>
   <dimen name="hud_btn_stopwatch_reset_margin_right">100dp</dimen>
+  <dimen name="hud_connection_info_margin_top">100dp</dimen>
 </resources>

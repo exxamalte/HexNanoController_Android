@@ -45,6 +45,7 @@ public class BluetoothLeService extends Service {
   private BluetoothManager mBluetoothManager;
   private BluetoothAdapter mBluetoothAdapter;
   private BluetoothGatt mBluetoothGatt;
+  private BluetoothLeServiceDelegate delegate;
 
   public final static String ACTION_GATT_CONNECTED = "com.example.bluetooth.le.ACTION_GATT_CONNECTED";
   public final static String ACTION_GATT_DISCONNECTED = "com.example.bluetooth.le.ACTION_GATT_DISCONNECTED";
@@ -56,6 +57,10 @@ public class BluetoothLeService extends Service {
   public final static UUID UUID_SERVICE = UUID.fromString("0000ffe0-0000-1000-8000-00805f9b34fb");
 
   public BluetoothGattCharacteristic mNotifyCharacteristic;
+
+  public void setDelegate(BluetoothLeServiceDelegate delegate) {
+    this.delegate = delegate;
+  }
 
   public void WriteValue(String strValue) {
     if (mBluetoothGatt != null) {
@@ -169,8 +174,11 @@ public class BluetoothLeService extends Service {
     }
 
     @Override
-    public void onReadRemoteRssi(BluetoothGatt gatt, int a, int b) {
-      Log.i(TAG, "onReadRemoteRssi");
+    public void onReadRemoteRssi(BluetoothGatt gatt, int rssi, int status) {
+      Log.d(TAG, "Read remote rssi="+rssi);
+      if (delegate != null) {
+        delegate.onReadRemoteRssi(rssi, status);
+      }
     }
 
     @Override
@@ -373,5 +381,9 @@ public class BluetoothLeService extends Service {
       return null;
     }
     return mBluetoothGatt.getServices();
+  }
+
+  public boolean readRemoteRssi() {
+    return mBluetoothGatt != null && mBluetoothGatt.readRemoteRssi();
   }
 }

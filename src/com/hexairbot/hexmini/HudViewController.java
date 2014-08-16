@@ -64,6 +64,7 @@ public class HudViewController extends ViewController
   private static final int STOPWATCH_BAR = 17;
   private static final int STOPWATCH_TEXT_VIEW = 18;
   private static final int STOPWATCH_RESET_BTN_ID = 19;
+  private static final int CONNECTION_INFO_TEXT_VIEW = 20;
 
   private final float BEGINNER_ELEVATOR_CHANNEL_RATIO = 0.5f;
   private final float BEGINNER_AILERON_CHANNEL_RATIO = 0.5f;
@@ -126,6 +127,8 @@ public class HudViewController extends ViewController
   private Text stopWatchTextView;
   private StopWatch stopWatch;
 
+  private Text connectionInfoTextView;
+
   private TelemetryDataRequester telemetryDataCapturer = new TelemetryDataRequester();
 
   private LocalBroadcastManager mLocalBroadcastManager;
@@ -178,8 +181,8 @@ public class HudViewController extends ViewController
     middleBg.setSizeParams(SizeParams.REPEATED, SizeParams.REPEATED);
     middleBg.setAlphaEnabled(true);
 
-    Image bottomLeftSkrew = new Image(res, R.drawable.screw, Align.BOTTOM_LEFT);
-    Image bottomRightSkrew = new Image(res, R.drawable.screw, Align.BOTTOM_RIGHT);
+    Image bottomLeftScrew = new Image(res, R.drawable.screw, Align.BOTTOM_LEFT);
+    Image bottomRightScrew = new Image(res, R.drawable.screw, Align.BOTTOM_RIGHT);
 
     Image logo = new Image(res, R.drawable.logo, Align.BOTTOM_LEFT);
     logo.setMargin(0, 0, (int) res.getDimension(R.dimen.hud_logo_margin_bottom), (int) res.getDimension(R.dimen.hud_logo_margin_left));
@@ -199,6 +202,12 @@ public class HudViewController extends ViewController
 
     stopWatchResetBtn = new Button(res, R.drawable.btn_stopwatchreset_normal, R.drawable.btn_stopwatchreset_hl, Align.TOP_RIGHT);
     stopWatchResetBtn.setMargin((int) res.getDimension(R.dimen.hud_btn_stopwatch_reset_margin_top), (int) res.getDimension(R.dimen.hud_btn_stopwatch_reset_margin_right), 0, 0);
+
+    connectionInfoTextView = new Text(context, context.getResources().getString(R.string.rssi_empty_value), Align.TOP_CENTER);
+    connectionInfoTextView.setMargin((int) res.getDimension(R.dimen.hud_connection_info_margin_top), 0, 0, 0);
+    connectionInfoTextView.setTextColor(Color.WHITE);
+    connectionInfoTextView.setTypeface(FontUtils.TYPEFACE.Helvetica(context));
+    connectionInfoTextView.setTextSize(res.getDimensionPixelSize(R.dimen.hud_state_text_size));
 
     settingsBtn = new Button(res, R.drawable.btn_settings_normal, R.drawable.btn_settings_hl, Align.TOP_RIGHT);
     settingsBtn.setMargin((int) res.getDimension(R.dimen.hud_btn_settings_margin_top), (int) res.getDimension(R.dimen.hud_btn_settings_margin_right), 0, 0);
@@ -248,8 +257,8 @@ public class HudViewController extends ViewController
     renderer.addSprite(MIDDLE_BG_ID, middleBg);
     renderer.addSprite(TOP_BAR_ID, topBarBg);
     renderer.addSprite(BOTTOM_BAR_ID, bottomBarBg);
-    renderer.addSprite(BOTTOM_LEFT_SCREW, bottomLeftSkrew);
-    renderer.addSprite(BOTTOM_RIGHT_SCREW, bottomRightSkrew);
+    renderer.addSprite(BOTTOM_LEFT_SCREW, bottomLeftScrew);
+    renderer.addSprite(BOTTOM_RIGHT_SCREW, bottomRightScrew);
     renderer.addSprite(LOGO, logo);
     renderer.addSprite(STATUS_BAR, statusBar);
     renderer.addSprite(BATTERY_INDICATOR_ID, batteryIndicator);
@@ -261,6 +270,7 @@ public class HudViewController extends ViewController
     renderer.addSprite(STOPWATCH_BAR, stopWatchBar);
     renderer.addSprite(STOPWATCH_TEXT_VIEW, stopWatchTextView);
     renderer.addSprite(STOPWATCH_RESET_BTN_ID, stopWatchResetBtn);
+    renderer.addSprite(CONNECTION_INFO_TEXT_VIEW, connectionInfoTextView);
     //renderer.addSprite(HELP_BTN, helpBtn);
 
     isAccMode = settings.isAccMode();
@@ -657,7 +667,9 @@ public class HudViewController extends ViewController
 
   @Override
   public void rssiValueDidChange(int rssi) {
-    // TODO: display value
+    Log.d(TAG, "RSSI value changed: " + rssi);
+    String rssiText = context.getResources().getString(R.string.rssi_number_value, rssi);
+    connectionInfoTextView.setText(rssiText);
   }
 
   public void setSettingsButtonEnabled(boolean enabled) {
@@ -889,14 +901,10 @@ public class HudViewController extends ViewController
     public void onReceive(Context arg0, Intent intent) {
       String action = intent.getAction();
       if (Intent.ACTION_BATTERY_CHANGED.equals(action)) {
-        final int level = intent.getIntExtra(
-          BatteryManager.EXTRA_LEVEL, 0);
-        final int scale = intent.getIntExtra(
-          BatteryManager.EXTRA_SCALE, 0);
-        final int status = intent.getIntExtra(
-          BatteryManager.EXTRA_STATUS, 0);
-        Log.d(TAG, String.format("level=%d,scale=%d,status=%d", level,
-          scale, status));
+        final int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
+        final int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, 0);
+        final int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, 0);
+        Log.d(TAG, String.format("level=%d,scale=%d,status=%d", level, scale, status));
 
         setBatteryValue(level);
         //battery_phone.setImageLevel(level / 25);
